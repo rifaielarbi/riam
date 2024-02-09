@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Card, CardBody, TabContent, TabPane, NavItem, NavLink, Label, Input, Form, Container } from "reactstrap";
+import { Row, Col, Card, CardBody, TabContent, TabPane, NavItem, NavLink, Label, Input, Form, Container, Modal,ModalBody, ModalHeader } from "reactstrap";
 import classnames from 'classnames';
 import { Link } from "react-router-dom";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
@@ -14,6 +14,7 @@ const Profile = () => {
     const [selectedCity , setselectedCity]  = useState('')
     const [Email, setEmail] = useState(Data['email'])
     const [DaysSelected,setDaysSelected]  = useState([])
+    const [openmodal, setopenModal] = useState(false)
     const optionGroup = [
         {
             options: [
@@ -91,23 +92,23 @@ const Profile = () => {
 
                                     <div id="basic-pills-wizard" className="twitter-bs-wizard">
                                         <ul className="twitter-bs-wizard-nav nav nav-pills nav-justified">
-                                            {[1, 2, 3, 4].map(tab => (
+                                            {[1, 2].map(tab => (
                                                 <NavItem key={tab}>
                                                     <NavLink
+                                                        style={{cursor: 'auto'}}
                                                         className={classnames({ active: activeTab === tab })}
-                                                        onClick={() => toggleTab(tab)}
+                                                        // onClick={() => toggleTab(tab)}
                                                     >
                                                         <span className="step-number">0{tab}</span>
                                                         <span className="step-title">
-                                                            {tab === 1 ? "Information personnelle" : tab === 2 ? "Géolocalisation de votre ferme" :
-                                                                tab === 3 ? "Déclare m’engager sur l’honneur " : "Confirm Detail"}
+                                                            {tab === 1 ? "Information personnelle" :  "Géolocalisation de votre ferme" }
                                                         </span>
                                                     </NavLink>
                                                 </NavItem>
                                             ))}
                                         </ul>
                                         <TabContent activeTab={activeTab} className="twitter-bs-wizard-tab-content">
-                                            {[1, 2, 3, 4].map(tab => (
+                                            {[1, 2].map(tab => (
                                                 <TabPane key={tab} tabId={tab}>
                                                     <Form>
                                                         {tab === 1 && (
@@ -246,13 +247,13 @@ const Profile = () => {
                                                                             <div className="form-check mb-3">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
-                                                                                    Form Checkbox
+                                                                                    Production végétale
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
-                                                                                    Form Checkbox checked
+                                                                                Production végétale
                                                                                 </Label>
                                                                             </div>
                                                                         </div>
@@ -261,13 +262,13 @@ const Profile = () => {
                                                                             <div className="form-check mb-3">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
-                                                                                    Form Checkbox
+                                                                                Aviculture
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
-                                                                                    Form Checkbox checked
+                                                                                Aviculture
                                                                                 </Label>
                                                                             </div>
                                                                         </div>
@@ -276,13 +277,13 @@ const Profile = () => {
                                                                             <div className="form-check mb-3">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
-                                                                                    Form Checkbox
+                                                                                    Apiculture
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2"  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
-                                                                                    Form Checkbox checked
+                                                                                    Apiculture
                                                                                 </Label>
                                                                             </div>
                                                                         </div>
@@ -292,7 +293,16 @@ const Profile = () => {
                                                                 </Row>
                                                             </React.Fragment>
                                                         )}
-                                                        {tab === 3 && (
+                                                         <Modal
+                                                            size="xl"
+                                                            isOpen={openmodal}
+                                                            toggle={() =>{setopenModal(false)}}
+                                                            >
+                                                            <ModalHeader >
+                                                             Déclare m’engager sur l’honneur à 
+                                                            
+                                                            </ModalHeader>
+                                                            <ModalBody>
                                                             <React.Fragment>
                                                                 
                                                                     <div style={{margin : 10,width :"100%",display :"flex", flexDirection : "row"}}>
@@ -361,9 +371,12 @@ const Profile = () => {
                                                                            
                                                                     </div>
                                                                     </div>
+                                                                    
                                                             </React.Fragment>
-                                                        )}
-                                                        {tab === 4 && (
+                                                            </ModalBody>
+                                                            </Modal>
+                                                       
+                                                        {/* {tab === 4 && (
                                                             <React.Fragment>
                                                                 <div className="row justify-content-center">
                                                                     <Col lg="6">
@@ -379,18 +392,24 @@ const Profile = () => {
                                                                     </Col>
                                                                 </div>
                                                             </React.Fragment>
-                                                        )}
+                                                        )} */}
                                                     </Form>
                                                 </TabPane>
                                             ))}
                                         </TabContent>
                                         <ul className="pager wizard twitter-bs-wizard-pager-link">
                                             <li className={activeTab === 1 ? "previous disabled" : "previous"}>
-                                                <Link to="#" onClick={() => toggleTab(activeTab - 1)}>Previous</Link>
+                                                <Link to="#" onClick={() => toggleTab(activeTab - 1)}>Précédent</Link>
                                             </li>
-                                            <li className={activeTab === 4 ? "next disabled" : "next"}>
-                                                <Link to="#" onClick={() => toggleTab(activeTab + 1)}>Next</Link>
+                                            {activeTab === 2 ? 
+                                            <li className={"next"}>
+                                                <Link to="#" onClick={() => setopenModal(true)}>Enregistrer</Link>
                                             </li>
+                                            : 
+                                            <li className={activeTab === 2 ? "next disabled" : "next"}>
+                                                <Link to="#" onClick={() => toggleTab(activeTab + 1)}>Suivant</Link>
+                                            </li>
+                                            }
                                         </ul>
                                     </div>
                                 </CardBody>
