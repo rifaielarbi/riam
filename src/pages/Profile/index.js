@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Row, Col, Card, CardBody, TabContent, TabPane, NavItem, NavLink, Label, Input, Form, Container, Modal,ModalBody, ModalHeader } from "reactstrap";
+import { Row, Col, Card, CardBody, TabContent, TabPane, NavItem, NavLink, Label, Input, Form, Container, Modal,ModalBody, ModalHeader,Progress } from "reactstrap";
 import classnames from 'classnames';
 import { Link } from "react-router-dom";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import Select from "react-select";
+import toastr from 'toastr'
+import 'toastr/build/toastr.min.css'
+
+toastr.options = {
+    positionClass: "toast-bottom-right",
+    closeButton : true
+  }
 
 const Profile = () => {
     const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -12,9 +19,15 @@ const Profile = () => {
     const [progressValue, setProgressValue] = useState(25);
     const [selectedGroup , setselectedGroup]  = useState('')
     const [selectedCity , setselectedCity]  = useState('')
+    const [fullname , setfullname]  = useState(Data['fullname'])
+    const [tel , settel]  = useState('')
+    const [adr_res , setadr_res]  = useState('')
+    const [adr_ferm , setadr_ferm]  = useState('')
     const [Email, setEmail] = useState(Data['email'])
     const [DaysSelected,setDaysSelected]  = useState([])
     const [openmodal, setopenModal] = useState(false)
+    const [progressvalue, setprogressvalue] = useState(0)
+
     const optionGroup = [
         {
             options: [
@@ -24,6 +37,7 @@ const Profile = () => {
             ]
         }
     ];
+
     const optionCity = [
         {
             options: [
@@ -32,10 +46,10 @@ const Profile = () => {
                 { label: "Marrakech", value: "Marrakech" },
                 { label: "Fes", value: "Fes" },
                 { label: "Tangier", value: "Tangier" },
-                // Add more cities as needed
             ]
         }
     ];
+
     const Days = [
         { value: "Flexible", label: "Flexible" },
         { value: "Lundi", label: "Lundi" },
@@ -45,7 +59,6 @@ const Profile = () => {
         { value: "Vendredi", label: "Vendredi" },
         { value: "Samedi", label: "Samedi" },
         { value: "Dimanche", label: "Dimanche" },
-
       ];
 
     const toggleTab = (tab) => {
@@ -57,7 +70,6 @@ const Profile = () => {
     const toggleTabProgress = (tab) => {
         if (activeTabProgress !== tab && tab >= 1 && tab <= 4) {
             setActiveTabProgress(tab);
-
             if (tab === 1) { setProgressValue(25) }
             if (tab === 2) { setProgressValue(50) }
             if (tab === 3) { setProgressValue(75) }
@@ -74,9 +86,28 @@ const Profile = () => {
 	};
 
     const handlechangeDays = (value) =>{
-        const DaySelected = value.map(item => parseInt(item.value));
+        console.log(value)
+        const DaySelected = value.map(item => item.value);
+        console.log(DaySelected)
         setDaysSelected(DaySelected)
-      }
+    }
+
+    const handleClickNext = () =>{
+        if(fullname == "" ||  Email == "" || tel == "" ||  selectedCity.value == null  || selectedGroup.value  == null || adr_res == ""){
+            toastr.error("Veuillez remplir tous les champs du formulaire d'informations personnelles. Merci de compléter toutes les sections du formulaire pour continuer.")
+        } else {
+            toggleTab(activeTab + 1)
+            setprogressvalue(40)
+        }
+        // 
+    }
+
+    const handleClickSave = () =>{
+        console.log(DaysSelected)
+        if(adr_ferm == ""){
+            toastr.error("Veuillez remplir tous les champs du formulaire d'informations de géolocalisation. Merci de compléter toutes les sections du formulaire pour enregistrer.")
+        }
+    }
 
     return (
         <React.Fragment>
@@ -107,6 +138,11 @@ const Profile = () => {
                                                 </NavItem>
                                             ))}
                                         </ul>
+                                        
+                                            <Progress color="primary" value={progressvalue} >
+                                                {progressvalue}%
+                                            </Progress>
+                                        
                                         <TabContent activeTab={activeTab} className="twitter-bs-wizard-tab-content">
                                             {[1, 2].map(tab => (
                                                 <TabPane key={tab} tabId={tab}>
@@ -117,51 +153,22 @@ const Profile = () => {
                                                                     <Col lg="6">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-firstname-input1">Nom et Prénom</Label>
-                                                                            <Input type="text" className="form-control" id="basicpill-firstname-input1" />
+                                                                            <Input type="text" className="form-control" id="basicpill-firstname-input1" value={fullname} onChange={(e) =>setfullname(e.target.value)}/>
                                                                         </div>
                                                                     </Col>
                                                                     <Col lg="6">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-lastname-input2">Adresse e-mail</Label>
-                                                                            <Input type="text" className="form-control" id="basicpill-lastname-input2" value={Email} />
+                                                                            <Input type="text" className="form-control" id="basicpill-lastname-input2" value={Email} onChange={(e) =>setEmail(e.target.value)} />
                                                                         </div>
                                                                     </Col>
-                                                                </Row>
+                                                                    </Row>
 
                                                                 <Row>
                                                                     <Col lg="6">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-phoneno-input3">Téléphone</Label>
-                                                                            <Input type="text" className="form-control" id="basicpill-phoneno-input3" />
-                                                                        </div>
-                                                                    </Col>
-                                                                    <Col lg="6">
-                                                                        <div className="mb-3">
-                                                                            <Label className="form-label" htmlFor="basicpill-email-input4">Email</Label>
-                                                                            <Input type="email" className="form-control" id="basicpill-email-input4" />
-                                                                        </div>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col lg="6">
-                                                                        <div className="mb-3">
-                                                                        <Label className="form-label">Êtes-vous un consommateur, un intermédiaire ou un distributeur ?</Label>
-                                                                        <Select
-                                                                            value={selectedGroup}
-                                                                            onChange={handleSelectGroup}
-                                                                            options={optionGroup}
-                                                                            classNamePrefix="select2-selection"
-                                                                            theme={(theme) => ({
-                                                                                ...theme,
-                                                                                borderRadius: 5,
-                                                                                colors: {
-                                                                                ...theme.colors,
-                                                                                  text: '#6A9762',
-                                                                                  primary25: 'white',
-                                                                                  primary: '#6A9762',
-                                                                                },
-                                                                              })}
-                                                                        />
+                                                                            <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>settel(e.target.value)} />
                                                                         </div>
                                                                     </Col>
                                                                     <Col lg="6">
@@ -185,12 +192,37 @@ const Profile = () => {
                                                                         />
                                                                         </div>
                                                                     </Col>
+                                                                    
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col lg="12">
+                                                                        <div className="mb-3">
+                                                                        <Label className="form-label">Êtes-vous un consommateur, un intermédiaire ou un distributeur ?</Label>
+                                                                        <Select
+                                                                            value={selectedGroup}
+                                                                            onChange={handleSelectGroup}
+                                                                            options={optionGroup}
+                                                                            classNamePrefix="select2-selection"
+                                                                            theme={(theme) => ({
+                                                                                ...theme,
+                                                                                borderRadius: 5,
+                                                                                colors: {
+                                                                                ...theme.colors,
+                                                                                  text: '#6A9762',
+                                                                                  primary25: 'white',
+                                                                                  primary: '#6A9762',
+                                                                                },
+                                                                              })}
+                                                                        />
+                                                                        </div>
+                                                                    </Col>
+                                                                    
                                                                 </Row>
                                                                 <Row>
                                                                     <Col lg="12">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-address-input1">Adresse de résidence</Label>
-                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2"></textarea>
+                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>setadr_res(e.target.value)}></textarea>
                                                                         </div>
                                                                     </Col>
                                                                 </Row>
@@ -403,11 +435,11 @@ const Profile = () => {
                                             </li>
                                             {activeTab === 2 ? 
                                             <li className={"next"}>
-                                                <Link to="#" onClick={() => setopenModal(true)}>Enregistrer</Link>
+                                                <Link to="#" onClick={handleClickSave}>Enregistrer</Link>
                                             </li>
                                             : 
                                             <li className={activeTab === 2 ? "next disabled" : "next"}>
-                                                <Link to="#" onClick={() => toggleTab(activeTab + 1)}>Suivant</Link>
+                                                <Link to="#" onClick={handleClickNext}>Suivant</Link>
                                             </li>
                                             }
                                         </ul>
