@@ -35,15 +35,7 @@ const Profile = () => {
     const [declareHonneurII, setdeclareHonneurII ] = useState([0,0,0])
 
 
-    const optionGroup = [
-        {
-            options: [
-                { label: "Consommateur", value: "Mustard" },
-                { label: "Distributeur", value: "Ketchup" },
-                { label: "Intermédiaire", value: "Relish" }
-            ]
-        }
-    ];
+   
 
     const optionCity = [
         {
@@ -264,7 +256,7 @@ const Profile = () => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid={true}>
-                    <Breadcrumbs title="Form Wizard" breadcrumbItems={[]} />
+                    <Breadcrumbs title="Mon profile" breadcrumbItems={[]} />
 
                     <Row>
                         <Col lg="12">
@@ -594,7 +586,7 @@ const Profile = () => {
                                                 <Link to="#" onClick={() => toggleTab(activeTab - 1)}>Précédent</Link>
                                             </li>
                                             {activeTab === 2 ? 
-                                                !Data['profileUser'] ? 
+                                                Object.keys(Data['profileUser']).length == 0 ? 
                                                     <li className={"next"}>
                                                         <Link to="#" onClick={handleClickSave}>Enregistrer</Link>
                                                     </li>

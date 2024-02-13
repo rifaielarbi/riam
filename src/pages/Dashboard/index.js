@@ -24,9 +24,9 @@ class Dashboard extends Component {
                 { title : "Dashboard", link : "#" },
             ],
             reports : [
-                { icon : "ri-stack-line", title : "Number of Sales", value : "1452", rate : "2.4%", desc : "From previous period" },
-                { icon : "ri-store-2-line", title : "Sales Revenue", value : "$ 38452", rate : "2.4%", desc : "From previous period" },
-                { icon : "ri-briefcase-4-line", title : "Average Price", value : "$ 15.4", rate : "2.4%", desc : "From previous period" },
+                { icon : "ri-stack-line", title : "Membres", value : "5", },
+                { icon : "ri-store-2-line", title : "Membres non adhérents", value : "2",  },
+                { icon : "ri-briefcase-4-line", title : "Total des fichiers importéee", value : "15", },
             ]
         }
         // const Data = localStorage.getItem("nonMember")
@@ -40,7 +40,6 @@ class Dashboard extends Component {
                 <div className="page-content">
                     <Container fluid>
 
-                    {/* <Breadcrumbs title="Dashboard" breadcrumbItems={this.state.breadcrumbItems} /> */}
                         <Row>
                             <Col xl={12}>
                                 <Row>

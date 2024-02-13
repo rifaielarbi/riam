@@ -21,12 +21,12 @@ class MiniWidgets extends Component {
                                     </div>
                                 </CardBody>
 
-                                <CardBody className="border-top py-3">
+                                {/* <CardBody className="border-top py-3">
                                     <div className="text-truncate">
                                         <span className="badge bg-success-subtle text-success font-size-11 me-1"><i className="mdi mdi-menu-up"> </i> {report.rate}</span>
                                         <span className="text-muted ms-2">{report.desc}</span>
                                     </div>
-                                </CardBody>
+                                </CardBody> */}
                             </Card>
                         </Col>
                     )

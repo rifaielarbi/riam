@@ -154,29 +154,29 @@ const Members = () => {
     return rolelabel['label']
   }
 
-  useEffect(() =>{
-		const Data = JSON.parse(localStorage.getItem("authUser"))
-    setUser(Data)
+    useEffect(() =>{
+      const Data = JSON.parse(localStorage.getItem("authUser"))
+      setUser(Data)
 
 
-    const GetData = async () =>{
-      await GetlisteMembers(Data.id,Data.token).then(res =>{
-        setmembers(res['data'])
-        console.log(res['data'])
-        res['data'].map(item =>{
-          const label =  getRolelabel(item.Role)
-          setDropdownValues((prevValues) => ({
-            ...prevValues,
-            [item.id]: label,
-          }));
+      const GetData = async () =>{
+        await GetlisteMembers(Data.id,Data.token).then(res =>{
+          setmembers(res['data'])
+          console.log(res['data'])
+          res['data'].map(item =>{
+            const label =  getRolelabel(item.Role)
+            setDropdownValues((prevValues) => ({
+              ...prevValues,
+              [item.id]: label,
+            }));
+          })
+        
+        }).catch(err =>{
+          console.log(err)
         })
-      
-      }).catch(err =>{
-        console.log(err)
-      })
-    }
-    GetData()
-  },[])
+      }
+      GetData()
+    },[])
 
   const initialOptions = DaysSelected.map(dayLabel => {
       const matchingOption = Days.find(day => day.label === dayLabel);
