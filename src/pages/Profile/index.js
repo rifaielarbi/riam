@@ -16,21 +16,21 @@ toastr.options = {
 const Profile = () => {
     const Data = JSON.parse(localStorage.getItem("authUser"))
     const progressProfile = JSON.parse(localStorage.getItem("progressProfile"))
-
+    console.log(Data['profileUser'])
     const [activeTab, setActiveTab] = useState(1);
     const [activeTabProgress, setActiveTabProgress] = useState(1);
     const [selectedGroup , setselectedGroup]  = useState('')
-    const [selectedCity , setselectedCity]  = useState('')
+    const [selectedCity , setselectedCity]  = useState(Data['profileUser']?.City ?  {label: Data['profileUser']?.City, value: Data['profileUser']?.City} :  "")
     const [fullname , setfullname]  = useState(Data['fullname'])
-    const [tel , settel]  = useState('')
-    const [adr_res , setadr_res]  = useState('')
-    const [adr_ferm , setadr_ferm]  = useState('')
+    const [tel , settel]  = useState(Data['profileUser']?.Tel || "")
+    const [adr_res , setadr_res]  = useState(Data['profileUser']?.adresse_resid || "")
+    const [adr_ferm , setadr_ferm]  = useState(Data['profileUser']?.adresse_ferme || "")
     const [Email, setEmail] = useState(Data['email'])
-    const [DaysSelected,setDaysSelected]  = useState([])
+    const [DaysSelected, setDaysSelected] = useState(Data['profileUser']?.days_dispo ? JSON.parse(Data['profileUser'].days_dispo) : []);
     const [openmodal, setopenModal] = useState(false)
     const [progressvalue, setprogressvalue] =useState(Data['completProfile']);
-    const [typeinspecter, settypeinspecter] = useState([0,0,0])
-    const [typeformation, settypeformation] = useState([0,0,0])
+    const [typeinspecter, settypeinspecter] = useState(Data['profileUser']?.typeinspecter? JSON.parse(Data['profileUser']?.typeinspecter) : [0,0,0])
+    const [typeformation, settypeformation] = useState(Data['profileUser']?.typeformation ? JSON.parse(Data['profileUser']?.typeformation) : [0,0,0])
     const [declareHonneur, setdeclareHonneur ] = useState([0,0,0,0,0,0])
     const [declareHonneurII, setdeclareHonneurII ] = useState([0,0,0])
 
@@ -81,6 +81,7 @@ const Profile = () => {
 	};
 
     const  handleSelectCity = async (selectedGroup) => {
+        console.log(selectedGroup)
 		setselectedCity(selectedGroup);
 	};
 
@@ -92,13 +93,14 @@ const Profile = () => {
     }
 
     const handleClickNext = async () =>{
-        if(fullname == "" ||  Email == "" || tel == "" ||  selectedCity.value == null  || selectedGroup.value  == null || adr_res == ""){
+        if(fullname == "" ||  Email == "" || tel == "" ||  selectedCity.value == null  || adr_res == ""){
             toastr.error("Veuillez remplir tous les champs du formulaire d'informations personnelles. Merci de compléter toutes les sections du formulaire pour continuer.")
         } else {
             toggleTab(activeTab + 1)
+            if(Data['completProfile'] != 100){
                 setprogressvalue(40)
+            }
                 // await ChangeCompletProfile(Data['token'],Data['id'],40).then(async () =>{
-                Data['completProfile'] = 40
                 // await localStorage.setItem("authUser", JSON.stringify(Data));
                 // })
             
@@ -112,15 +114,20 @@ const Profile = () => {
         if(adr_ferm == ""){
             toastr.error("Veuillez remplir tous les champs du formulaire d'informations de géolocalisation. Merci de compléter toutes les sections du formulaire pour enregistrer.")
         } else {
+            if(Data['completProfile'] != 100){
                 setprogressvalue(80)
+            } 
                 // await ChangeCompletProfile(Data['token'],Data['id'],80).then(async () =>{
-                    Data['completProfile'] = 80
+                    // Data['completProfile'] = 80
                 //     await localStorage.setItem("authUser", JSON.stringify(Data));
                 // })
             
             setopenModal(true)
         }
     }
+
+
+  
 
     const handleChangeInspecter = (item,value) =>{
         settypeinspecter(prevState => {
@@ -157,9 +164,53 @@ const Profile = () => {
 
     }
 
-    const handlechangesaveProfile = async () =>{
-        if(calcNumberchecked(declareHonneur) == 0|| calcNumberchecked(declareHonneurII) == 0 ) {
-            toastr.error("Merci de cocher toutes les options qui correspondent à vos engagements.")
+    const saveProfile = async () =>{
+        
+            if(calcNumberchecked(declareHonneur) == 0|| calcNumberchecked(declareHonneurII) == 0 ) {
+                toastr.error("Merci de cocher toutes les options qui correspondent à vos engagements.")
+            } else {
+                const DataProfile = {
+                    Data : {
+                        id_user : Data['id'],
+                        Tel : tel,
+                        City:selectedCity.value,
+                        adrs_res : adr_res,
+                        adrs_ferme : adr_ferm,
+                        adr_google : "gogole maps adress",
+                        days_dispo : JSON.stringify(DaysSelected),
+                        lat : "33.222121",
+                        lang : "17.445566",
+                        typeinspecter : JSON.stringify(typeinspecter),
+                        typeformation : JSON.stringify(typeformation),
+                        declareHonneur : JSON.stringify(declareHonneur),
+                        declareHonneurII : JSON.stringify(declareHonneurII),
+                    }
+                }
+                await SaveProfile(Data['token'],DataProfile).then(async res =>{
+                    if(res['status'] == "success"){
+                        setopenModal(false)
+                        await ChangeCompletProfile(Data['token'],Data['id'],100).then(async (res) =>{
+                            console.log(res)
+                            setprogressvalue(100)
+                            Data['completProfile'] = 100
+                            Data['profileUser'] = res['data']
+                            await localStorage.setItem("authUser", JSON.stringify(Data));
+                            toastr.success("Votre profil a été ajouté avec succès.")
+                        }).catch(err =>{
+                            toastr.error("Erreur d'ajoute du profil !")
+                        })
+                        
+                    }
+                }).catch(err =>{
+                    console.log(err)
+                }) 
+            }
+
+    }
+
+    const updateProfile = async () =>{
+        if(adr_ferm == ""){
+            toastr.error("Veuillez remplir tous les champs du formulaire d'informations de géolocalisation. Merci de compléter toutes les sections du formulaire pour enregistrer.")
         } else {
             const DataProfile = {
                 Data : {
@@ -185,18 +236,16 @@ const Profile = () => {
                         console.log(res)
                         setprogressvalue(100)
                         Data['completProfile'] = 100
+                        Data['profileUser'] = res['data']
                         await localStorage.setItem("authUser", JSON.stringify(Data));
-                        toastr.success("Votre profil a été ajouté avec succès.")
+                        toastr.success("Votre profil a été mis à jour avec succès.")
                     }).catch(err =>{
                         toastr.error("Erreur de mise à jour du profil !")
                     })
                     
                 }
-            }).catch(err =>{
-                console.log(err)
-            }) 
+            })
         }
-
     }
 
     const calcNumberchecked = (array) =>{
@@ -205,6 +254,11 @@ const Profile = () => {
         }, 0);
         return countOnes;
     }
+
+    const initialOptions = DaysSelected.map(dayLabel => {
+        const matchingOption = Days.find(day => day.label === dayLabel);
+        return matchingOption || null;
+    }).filter(Boolean);
 
     return (
         <React.Fragment>
@@ -225,7 +279,7 @@ const Profile = () => {
                                                     <NavLink
                                                         style={{cursor: 'auto'}}
                                                         className={classnames({ active: activeTab === tab })}
-                                                        onClick={() => toggleTab(tab)}
+                                                        // onClick={() => toggleTab(tab)}
                                                     >
                                                         <span className="step-number">0{tab}</span>
                                                         <span className="step-title">
@@ -265,7 +319,7 @@ const Profile = () => {
                                                                     <Col lg="6">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-phoneno-input3">Téléphone</Label>
-                                                                            <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>settel(e.target.value)} />
+                                                                            <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>settel(e.target.value)} value={tel}/>
                                                                         </div>
                                                                     </Col>
                                                                     <Col lg="6">
@@ -291,7 +345,7 @@ const Profile = () => {
                                                                     </Col>
                                                                     
                                                                 </Row>
-                                                                <Row>
+                                                                {/* <Row>
                                                                     <Col lg="12">
                                                                         <div className="mb-3">
                                                                         <Label className="form-label">Êtes-vous un consommateur, un intermédiaire ou un distributeur ?</Label>
@@ -314,12 +368,12 @@ const Profile = () => {
                                                                         </div>
                                                                     </Col>
                                                                     
-                                                                </Row>
+                                                                </Row> */}
                                                                 <Row>
                                                                     <Col lg="12">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-address-input1">Adresse de résidence</Label>
-                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>setadr_res(e.target.value)}></textarea>
+                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>setadr_res(e.target.value)} value={adr_res}></textarea>
                                                                         </div>
                                                                     </Col>
                                                                 </Row>
@@ -331,7 +385,7 @@ const Profile = () => {
                                                                     <Col lg="12">
                                                                         <div className="mb-3">
                                                                             <Label className="form-label" htmlFor="basicpill-address-input1">L'adresse de votre ferme</Label>
-                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>{setadr_ferm(e.target.value)}}></textarea>
+                                                                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>{setadr_ferm(e.target.value)}} value={adr_ferm}></textarea>
                                                                         </div>
                                                                     </Col>
                                                                     {/* ... Additional form elements for tab 2 */}
@@ -343,13 +397,13 @@ const Profile = () => {
                                                                     </Label>
 
                                                                         <Select
-                                                                        classNamePrefix="select2-selection"
-                                                                        placeholder="Sélectionner..."
-                                                                        title="Accès"
-                                                                        options={Days}
-                                                                        isMulti
-                                                                        onChange={handlechangeDays}
-                                                                    />
+                                                                            classNamePrefix="select2-selection"
+                                                                            placeholder="Sélectionner..."
+                                                                            options={Days}
+                                                                            isMulti
+                                                                            onChange={handlechangeDays}
+                                                                            value={initialOptions}
+                                                                        />
                                                                     
                                                                 </div>
                                                                 </Row>
@@ -374,13 +428,13 @@ const Profile = () => {
                                                                         </div>
                                                                         <div style={{margin : 10,width :"30%"}}>
                                                                             <div className="form-check mb-3">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={(e) =>{handleChangeInspecter(0,e.target.checked)}} />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={typeinspecter[0] == 1 ? true : false} onChange={(e) =>{handleChangeInspecter(0,e.target.checked)}} />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
                                                                                     Production végétale
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" onChange={(e) =>{handleChangeformation(0,e.target.checked)}}  />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" checked={typeformation[0] == 1 ? true : false} onChange={(e) =>{handleChangeformation(0,e.target.checked)}}  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
                                                                                 Production végétale
                                                                                 </Label>
@@ -389,13 +443,13 @@ const Profile = () => {
 
                                                                         <div style={{margin : 10,width :"30%"}}>
                                                                             <div className="form-check mb-3">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={(e) =>{handleChangeInspecter(1,e.target.checked)}} />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={typeinspecter[1] == 1 ? true : false} onChange={(e) =>{handleChangeInspecter(1,e.target.checked)}} />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
                                                                                 Aviculture
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" onChange={(e) =>{handleChangeformation(1,e.target.checked)}}  />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" checked={typeformation[1] == 1 ? true : false} onChange={(e) =>{handleChangeformation(1,e.target.checked)}}  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
                                                                                 Aviculture
                                                                                 </Label>
@@ -404,13 +458,13 @@ const Profile = () => {
 
                                                                         <div style={{margin : 10,width :"30%"}}>
                                                                             <div className="form-check mb-3">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={(e) =>{handleChangeInspecter(2,e.target.checked)}} />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" checked={typeinspecter[2] == 1 ? true : false} onChange={(e) =>{handleChangeInspecter(2,e.target.checked)}} />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
                                                                                     Apiculture
                                                                                 </Label>
                                                                             </div>
                                                                             <div className="form-check">
-                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" onChange={(e) =>{handleChangeformation(2,e.target.checked)}}  />
+                                                                                <Input className="form-check-input" type="checkbox" value="" id="defaultCheck2" checked={typeformation[2] == 1 ? true : false} onChange={(e) =>{handleChangeformation(2,e.target.checked)}}  />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck2">
                                                                                     Apiculture
                                                                                 </Label>
@@ -503,7 +557,7 @@ const Profile = () => {
                                                                     <Button
                                                                         type="button"
                                                                         color="primary" className="waves-effect waves-light"
-                                                                        onClick={handlechangesaveProfile}
+                                                                        onClick={saveProfile}
                                                                     >
                                                                         Enregistrer
                                                                     </Button>
@@ -540,9 +594,14 @@ const Profile = () => {
                                                 <Link to="#" onClick={() => toggleTab(activeTab - 1)}>Précédent</Link>
                                             </li>
                                             {activeTab === 2 ? 
-                                            <li className={"next"}>
-                                                <Link to="#" onClick={handleClickSave}>Enregistrer</Link>
-                                            </li>
+                                                !Data['profileUser'] ? 
+                                                    <li className={"next"}>
+                                                        <Link to="#" onClick={handleClickSave}>Enregistrer</Link>
+                                                    </li>
+                                                    :
+                                                    <li className={"next"}>
+                                                        <Link to="#" onClick={updateProfile}>Mise à jour</Link>
+                                                    </li>
                                             : 
                                             <li className={activeTab === 2 ? "next disabled" : "next"}>
                                                 <Link to="#" onClick={handleClickNext}>Suivant</Link>

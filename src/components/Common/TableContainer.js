@@ -76,7 +76,7 @@ const TableContainer = ({
   customPageSize,
   className,
   customPageSizeOptions,
-  openModalUpdate,
+  handleClickMember,
   userData,
   dropdownData
 
@@ -213,7 +213,7 @@ const TableContainer = ({
   return (
     <Fragment>
       <Row className="mb-2">
-        <Col md={customPageSizeOptions ? 2 : 1}>
+        {/* <Col md={customPageSizeOptions ? 2 : 1}>
           <select
             className="form-select"
             value={pageSize}
@@ -225,7 +225,7 @@ const TableContainer = ({
               </option>
             ))}
           </select>
-        </Col>
+        </Col> */}
         {isGlobalFilter && (
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
@@ -301,16 +301,15 @@ const TableContainer = ({
 
           <tbody {...getTableBodyProps()}>
             {page.map(row => {
-              console.log(dropdownValues)
               prepareRow(row);
               return (
                 <Fragment key={row.getRowProps().key}>
-                  <tr>
+                  <tr >
                     {row.cells.map(cell => {
                       console.log(cell.row.original.Role)
                       if(cell.column.Header != 'Accès') {
                       return (
-                        <td key={cell.id} {...cell.getCellProps()}>
+                        <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickMember(row.original)}}>
                           {cell.render("Cell")}
                         </td>
                       );

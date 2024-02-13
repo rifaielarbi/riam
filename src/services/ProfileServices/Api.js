@@ -24,6 +24,28 @@ const SaveProfile = async(Token,DataProfile) =>{
       }
 }
 
+
+const UpdateMemeberProfile = async(Token,DataProfile) =>{
+    const options = {
+        baseURL: BASE_URL,
+        responseType: 'json',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin':"*/*",
+            'Authorization': `Bearer ${Token}`
+        },
+    }
+  
+    const instance = axios.create(options)
+      try {
+        const response = await instance.post("/api/profile/UpdateProfileMember",DataProfile ); 
+        return response.data;
+      } catch (error) { 
+          throw error.response 
+      }
+}
+
 const ChangeCompletProfile = async(Token,userId,value) =>{
     const DataPost = {
         userId : userId,
@@ -49,7 +71,31 @@ const ChangeCompletProfile = async(Token,userId,value) =>{
       }
 }
 
+const changeDeclareHonneur = async(Token,userId,value) =>{
+    const DataPost = {
+        userId : userId,
+        value : value
+    }
+    const options = {
+        baseURL: BASE_URL,
+        responseType: 'json',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin':"*/*",
+            'Authorization': `Bearer ${Token}`
+        },
+    }
+  
+    const instance = axios.create(options)
+      try {
+        const response = await instance.post("/api/profile/changeDeclareHonneur",DataPost ); 
+        return response.data;
+      } catch (error) { 
+          throw error.response 
+      }
+}
 
 
 
-export {SaveProfile,ChangeCompletProfile}
+export {SaveProfile,ChangeCompletProfile,changeDeclareHonneur,UpdateMemeberProfile }

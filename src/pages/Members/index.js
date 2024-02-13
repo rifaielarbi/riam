@@ -3,75 +3,92 @@ import TableContainer from "../../components/Common/TableContainer";
 
 //Import Breadcrumb
 import Breadcrumbs from '../../components/Common/Breadcrumb';
-import { Card, CardBody, Container } from "reactstrap";
+import { Card, CardBody, Container,TabContent, TabPane, Collapse, NavLink, NavItem, Nav, Row, Col,Label, Input,Button } from "reactstrap";
 import { products, } from "../../common/data/ecommerce";
-import Modal from 'react-modal';
+import {  Modal,ModalBody, ModalHeader} from "reactstrap";
 import { useSelector } from "react-redux";
+import Select from "react-select";
 import { GetlisteMembers } from '../../services/MembersServices/Api';
 import toastr from 'toastr'
 import 'toastr/build/toastr.min.css'
+import classnames from "classnames";
+import { UpdateMemeberProfile } from "../../services/ProfileServices/Api";
 
 const Members = () => {
   const [modalUpdateIsOpen,setmodalUpdateIsOpen] = useState(false)
   const [members,setmembers] = useState([])
   const [User,setUser] = useState()
   const [dropdownValues, setDropdownValues] = useState({});
-  const closeModal = ()  =>{
-    setmodalUpdateIsOpen(false);
+  const  [openmodal, setopenModal] = useState(false)
+  const [activeTabJustify,setactiveTabJustify] = useState("1")
+  const [memberSelected , setmemberSelected] = useState()
+  const [selectedCity , setselectedCity]  = useState("")
+  const [fullname , setfullname]  = useState("")
+  const [tel , settel]  = useState("")
+  const [adr_res , setadr_res]  = useState("")
+  const [adr_ferm , setadr_ferm]  = useState("")
+  const [Email, setEmail] = useState()
+  const [DaysSelected, setDaysSelected] = useState([])
+
+    const optionCity = [
+      {
+          options: [
+              { label: "Casablanca", value: "Casablanca" },
+              { label: "Rabat", value: "Rabat" },
+              { label: "Marrakech", value: "Marrakech" },
+              { label: "Fes", value: "Fes" },
+              { label: "Tangier", value: "Tangier" },
+          ]
+        }
+    ];
+
+  const Days = [
+    { value: "Flexible", label: "Flexible" },
+    { value: "Lundi", label: "Lundi" },
+    { value: "Mardi", label: "Mardi" },
+    { value: "Mercredi", label: "Mercredi" },
+    { value: "Jeudi", label: "Jeudi" },
+    { value: "Vendredi", label: "Vendredi" },
+    { value: "Samedi", label: "Samedi" },
+    { value: "Dimanche", label: "Dimanche" },
+  ];
+
+
+
+  
+
+  const handleClickMember = (member) =>{
+    // if(member['profile']){
+     
+      setactiveTabJustify("1")
+      setopenModal(true)
+      
+      setmemberSelected(member)
+      setEmail(member?.email)
+      setfullname(member?.NomComplet)
+      settel(member?.profile?.Tel)
+      setselectedCity({label: member?.profile?.City, value: member?.profile?.City})
+      setadr_res(member?.profile?.adrs_res)
+      setDaysSelected( member?.profile?.days_dispo ? JSON.parse(member?.profile?.days_dispo) : [])
+      setadr_ferm(member?.profile?.adrs_ferme)
+
+      console.log(member)
+    // } else{
+    //   toastr.warning("le membre n'a pas encourt compléter leur profil !")
+    // }
   }
 
-  const openModal = ()  =>{
-    setmodalUpdateIsOpen(true);
-  }
-  const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: 100
-    },
+  const  toggleCustomJustified = (tab) => {
+		setactiveTabJustify(tab)
+	}
+
+  const  handleSelectCity = async (selectedGroup) => {
+    console.log(selectedGroup)
+    setselectedCity(selectedGroup);
   };
 
-  const products = [
-    {
-      id: 1,
-      name: "Airi",
-      Prénom: "Satou",
-      Email: "test@gmail.com",
-      createDate: "2008/11/28",
-      role: "Consommateurs",
-    },
-  
-    {
-      id: 2,
-      name: "Angelica ",
-      Prénom: "Ramos",
-      Email: "test@gmail.com",
-      createDate: "2009/10/09",
-      role: "Partenaires,",
-    },
-  
-    {
-      id: 3,
-      name: "Ashton ",
-      Prénom: "Cox",
-      Email: "test@gmail.com",
-      createDate: "2009/01/12",
-      role: "COS",
-    },
-  
-    {
-      id: 4,
-      name: "Bradley",
-      Prénom: "Greer",
-      Email: "test@gmail.com",
-      createDate: "2012/10/13",
-      role: "Distributeurs/producteurs",
-    }
-  ]
+
+
 
   const columns = useMemo(
     () => [
@@ -100,7 +117,6 @@ const Members = () => {
         filterable: false,
       },
     ],
-    []
   );
 
   const Roles = [
@@ -161,6 +177,39 @@ const Members = () => {
     GetData()
   },[])
 
+  const initialOptions = DaysSelected.map(dayLabel => {
+      const matchingOption = Days.find(day => day.label === dayLabel);
+      return matchingOption || null;
+  }).filter(Boolean);
+
+  const handlechangeDays = (value) =>{
+    console.log(value)
+    const DaySelected = value.map(item => item.value);
+    console.log(DaySelected)
+    setDaysSelected(DaySelected)
+  }
+
+  const updateProfileMemeber = async () =>{
+    console.log(memberSelected.profile)
+    const Data = JSON.parse(localStorage.getItem("authUser"))
+    memberSelected.profile['adrs_res'] = adr_res
+    memberSelected.profile['Tel'] = tel
+    memberSelected.profile['adrs_ferme'] = adr_ferm
+    memberSelected.profile['City'] = selectedCity?.value
+    memberSelected.profile['days_dispo'] = JSON.stringify(DaysSelected)
+
+    const DataProfile = { Data : memberSelected.profile }
+    
+    await UpdateMemeberProfile(Data.token, DataProfile ).then(res =>{
+      setopenModal(false)
+      if(res['status'] == "success"){
+        toastr.success('le profil de ' + fullname + " était bien misé à jour" )
+      }
+    }).catch(err =>{
+      toastr.error("Erreur lors de mises à jour le profile ")
+    })
+  }
+
   
 
   return (
@@ -183,11 +232,150 @@ const Members = () => {
                 customPageSize={10}
                 // openModalUpdate={openModal}
                 // isAddOptions={true}
+                handleClickMember={handleClickMember}
                 dropdownData = {dropdownValues}
                 userData={User}
               />
             </CardBody>
           </Card>
+          <Modal
+                size="xl"
+                isOpen={openmodal}
+                toggle={() =>{setopenModal(false)}}
+                >
+                <ModalHeader >
+                 Information membre
+                </ModalHeader>
+                <ModalBody>
+                <Nav tabs className="nav-tabs-custom nav-justified">
+											<NavItem>
+												<NavLink
+													style={{ cursor: "pointer" }}
+													className={classnames({
+														active: activeTabJustify === "1"
+													})}
+													onClick={() => {
+													  toggleCustomJustified("1");
+													}}
+												>
+													<span className="d-none d-sm-block">Information personnelle</span>
+												</NavLink>
+											</NavItem>
+											<NavItem>
+												<NavLink
+													style={{ cursor: "pointer" }}
+													className={classnames({
+														active: activeTabJustify === "2"
+													})}
+													onClick={() => {
+														toggleCustomJustified("2");
+													}}
+												>
+													<span className="d-none d-sm-block">Géolocalisation de ferme</span>
+												</NavLink>
+											</NavItem>
+										</Nav>
+              </ModalBody>
+              <TabContent activeTab={activeTabJustify}>
+											<TabPane tabId="1" className="p-3">
+                      <React.Fragment>
+                          <Row>
+                              <Col lg="6">
+                                  <div className="mb-3">
+                                      <Label className="form-label" htmlFor="basicpill-firstname-input1">Nom et Prénom</Label>
+                                      <Input type="text" style={{backgroundColor : "#E1E1E1"}} className="form-control" id="basicpill-firstname-input1" value={fullname} onChange={(e) =>setfullname(e.target.value)} disabled={true}/>
+                                  </div>
+                              </Col>
+                              <Col lg="6">
+                                  <div className="mb-3">
+                                      <Label className="form-label" htmlFor="basicpill-lastname-input2">Adresse e-mail</Label>
+                                      <Input type="text" style={{backgroundColor : "#E1E1E1"}} className="form-control" id="basicpill-lastname-input2" value={Email} onChange={(e) =>setEmail(e.target.value)} disabled={true} />
+                                  </div>
+                              </Col>
+                          
+                          <Row>
+                              <Col lg="6">
+                                  <div className="mb-3">
+                                      <Label className="form-label" htmlFor="basicpill-phoneno-input3">Téléphone</Label>
+                                      <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>settel(e.target.value)} value={tel}/>
+                                  </div>
+                              </Col>
+                              <Col lg="6">
+                                  <div className="mb-3">
+                                      <Label className="form-label" htmlFor="basicpill-email-input4">Ville de résidence</Label>
+                                      <Select
+                                      value={selectedCity}
+                                      onChange={handleSelectCity}
+                                      options={optionCity}
+                                      classNamePrefix="select2-selection"
+                                      theme={(theme) => ({
+                                          ...theme,
+                                          borderRadius: 5,
+                                          colors: {
+                                          ...theme.colors,
+                                            text: '#6A9762',
+                                            primary25: 'white',
+                                            primary: '#6A9762',
+                                          },
+                                        })}
+                                  />
+                                  </div>
+                              </Col>
+                              
+                          </Row>
+                          <Row>
+                              <Col lg="12">
+                                  <div className="mb-3">
+                                      <Label className="form-label" htmlFor="basicpill-address-input1">Adresse de résidence</Label>
+                                      <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>setadr_res(e.target.value)} value={adr_res}></textarea>
+                                  </div>
+                              </Col>
+                          </Row>
+                        </Row>
+                      </React.Fragment>
+											</TabPane>
+											<TabPane tabId="2" className="p-3">
+                      <React.Fragment>
+                            <Row>
+                                <Col lg="12">
+                                    <div className="mb-3">
+                                        <Label className="form-label" htmlFor="basicpill-address-input1">L'adresse de votre ferme</Label>
+                                        <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>{setadr_ferm(e.target.value)}} value={adr_ferm}></textarea>
+                                    </div>
+                                </Col>
+                                {/* ... Additional form elements for tab 2 */}
+                            </Row>
+                            <Row>
+                            <div className="mb-3" >
+                            <Label className="form-label">
+                                Veuillez cocher les jours de la semaine où vous serez disponibles pour effectuer les visites des fermes : 
+                            </Label>
+                                <Select
+                                    classNamePrefix="select2-selection"
+                                    placeholder="Sélectionner..."
+                                    options={Days}
+                                    isMulti
+                                    onChange={handlechangeDays}
+                                    value={initialOptions}
+                                />
+                                
+                            </div>
+                            </Row>
+                           
+                      </React.Fragment>
+											</TabPane>
+                      <div style={{display : 'flex', alignItems : 'center' , justifyContent : 'center',margin : 10}}>
+                                 <Button
+                                     type="button"
+                                     color="primary" className="waves-effect waves-light"
+                                     onClick={updateProfileMemeber}
+                                 >
+                                     Mise à jour
+                                 </Button>
+                            </div>
+                </TabContent>
+
+          </Modal>
 
           
         </Container>
