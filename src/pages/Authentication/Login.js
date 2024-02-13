@@ -37,7 +37,9 @@ const Login = (props) => {
         dispatch(loginUserSuccessful(res['data']))
         await localStorage.setItem("authUser", JSON.stringify(res['data']));
         localStorage.setItem("nonMember", "false");
-        navigate('/dashboard');
+        // navigate('/dashboard');
+        window.location.reload()
+
         } else {
           // await localStorage.setItem("authUser", JSON.stringify(res['data']));
           // await localStorage.setItem("nonMember", JSON.stringify('yes'));

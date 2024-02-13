@@ -17,6 +17,7 @@ import {
   changePreloader
 } from "../../store/actions";
 import withRouter from "../Common/withRouter";
+const Data = JSON.parse(localStorage.getItem("authUser"))
 
 class SidebarContent extends Component {
 
@@ -109,22 +110,24 @@ class SidebarContent extends Component {
                 <span className="ms-1">{this.props.t('Dashboard')}</span>
               </Link>
             </li>
-
-            <li>
-              <Link to="/members" className="waves-effect">
-                <i className=" ri-team-fill"></i>
-                {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                <span className="ms-1">{this.props.t('GestionDroit')}</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/adfiles" className="waves-effect">
-                <i className="ri-upload-fill"></i>
-                {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                <span className="ms-1">{this.props.t('upload files')}</span>
-              </Link>
-            </li>
-
+            {Data?.role == 1 &&
+              <li>
+                <Link to="/members" className="waves-effect">
+                  <i className=" ri-team-fill"></i>
+                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
+                  <span className="ms-1">{this.props.t('GestionDroit')}</span>
+                </Link>
+              </li>
+            }
+            {Data?.role == 1 &&
+              <li>
+                <Link to="/adfiles" className="waves-effect">
+                  <i className="ri-upload-fill"></i>
+                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
+                  <span className="ms-1">{this.props.t('upload files')}</span>
+                </Link>
+              </li>
+            }
             <li>
               <Link to="/files" className="waves-effect">
                 <i className=" ri-folder-2-fill"></i>
@@ -133,7 +136,7 @@ class SidebarContent extends Component {
               </Link>
             </li>
 
-            <li>
+            {/* <li>
               <Link to="/calendar" className=" waves-effect">
                 <i className="ri-calendar-2-line"></i>
                 <span className="ms-1">{this.props.t('Calendar')}</span>
@@ -319,7 +322,7 @@ class SidebarContent extends Component {
                   </ul>
                 </li>
               </ul>
-            </li>
+            </li> */}
 
           </ul>
         </div>

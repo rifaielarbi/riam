@@ -23,8 +23,8 @@ const Profile = () => {
     const [selectedCity , setselectedCity]  = useState(Data['profileUser']?.City ?  {label: Data['profileUser']?.City, value: Data['profileUser']?.City} :  "")
     const [fullname , setfullname]  = useState(Data['fullname'])
     const [tel , settel]  = useState(Data['profileUser']?.Tel || "")
-    const [adr_res , setadr_res]  = useState(Data['profileUser']?.adresse_resid || "")
-    const [adr_ferm , setadr_ferm]  = useState(Data['profileUser']?.adresse_ferme || "")
+    const [adr_res , setadr_res]  = useState(Data['profileUser']?.adrs_res || "")
+    const [adr_ferm , setadr_ferm]  = useState(Data['profileUser']?.adrs_ferme || "")
     const [Email, setEmail] = useState(Data['email'])
     const [DaysSelected, setDaysSelected] = useState(Data['profileUser']?.days_dispo ? JSON.parse(Data['profileUser'].days_dispo) : []);
     const [openmodal, setopenModal] = useState(false)

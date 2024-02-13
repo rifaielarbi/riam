@@ -106,6 +106,9 @@ import UploadFiles from '../pages/UploadFiles'
 import Files from '../pages/Files'
 import Profile from '../pages/Profile'
 
+
+const Data = JSON.parse(localStorage.getItem("authUser"))
+
 const authProtectedRoutes = [
 
 
@@ -188,13 +191,16 @@ const authProtectedRoutes = [
 
 	//calendar
 	{ path: "/calendar", component: <Calendar /> },
+		Data?.role == 1 && 	{ path: "/members", component: <Members /> },
 
-	{ path: "/members", component: <Members /> },
+	
 
 	{ path: "/dashboard", component: <Dashboard /> },
 
-	{ path: "/adfiles", component: <UploadFiles /> },
+		Data?.role == 1 &&  { path: "/adfiles", component: <UploadFiles /> },
+
 	{ path: "/files", component: <Files /> },
+
 	{ path: "/profile", component: <Profile /> },
 
 

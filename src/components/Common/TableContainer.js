@@ -306,7 +306,6 @@ const TableContainer = ({
                 <Fragment key={row.getRowProps().key}>
                   <tr >
                     {row.cells.map(cell => {
-                      console.log(cell.row.original.Role)
                       if(cell.column.Header != 'Accès') {
                       return (
                         <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickMember(row.original)}}>

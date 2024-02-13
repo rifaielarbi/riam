@@ -59,6 +59,7 @@ const Members = () => {
 
   const handleClickMember = (member) =>{
     // if(member['profile']){
+      console.log(member)
      
       setactiveTabJustify("1")
       setopenModal(true)
