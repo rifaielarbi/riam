@@ -2,7 +2,6 @@
   "name": "EspaceRIAM",
   "version": "0.0.1",
   "private": true,
-  "homepage": "https://riam.servermdz.com/app",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^40.1.0",
     "@ckeditor/ckeditor5-react": "^6.2.0",
