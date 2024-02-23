@@ -40,6 +40,7 @@ const Register = ({ user, loading, registerUser, apiError, registerUserFailed })
             }
         })
       };
+      
     useEffect(() => {
         registerUserFailed("");
         apiError("");

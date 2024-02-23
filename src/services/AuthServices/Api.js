@@ -82,6 +82,28 @@ const BASE_URL = config.apiUrl
     }
   };
 
+  const GetDashboard = async (Token) => {
+    const options = {
+      baseURL: BASE_URL,
+      responseType: 'json',
+      headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin':"*/*",
+          'Authorization': `Bearer ${Token}`
+      },
+    }
+    const instance = axios.create(options)
+    try {
+      const response = await instance.get("/api/dashboard/GetDashboard"); 
+      return response.data;
+    } catch (error) { 
+        throw error.response 
+    }
+
+  }
+
+
 
 
 
@@ -89,4 +111,4 @@ const BASE_URL = config.apiUrl
 
   
 
-  export {AuthLogin,AuthSignup};
+  export {AuthLogin,AuthSignup,GetDashboard};

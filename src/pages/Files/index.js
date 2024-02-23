@@ -105,10 +105,12 @@ const Index = ({props}) => {
           /> */}
 
               <Row>
+                <Row>
                   <Breadcrumbs
                       title="Fichiers partagés"
                       breadcrumbItems={[]}
                 />
+                </Row>
                  {/* <AvForm>
                 <InputGroup>
                     <AvField

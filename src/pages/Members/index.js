@@ -8,7 +8,7 @@ import { products, } from "../../common/data/ecommerce";
 import {  Modal,ModalBody, ModalHeader} from "reactstrap";
 import { useSelector } from "react-redux";
 import Select from "react-select";
-import { GetlisteMembers } from '../../services/MembersServices/Api';
+import { GetlisteMembers, SaveEvaluateMember } from '../../services/MembersServices/Api';
 import toastr from 'toastr'
 import 'toastr/build/toastr.min.css'
 import classnames from "classnames";
@@ -29,6 +29,9 @@ const Members = () => {
   const [adr_ferm , setadr_ferm]  = useState("")
   const [Email, setEmail] = useState()
   const [DaysSelected, setDaysSelected] = useState([])
+  const [openmodalevaluate, setopenmodalevaluate] = useState(false)
+  const [evaluatYear, setevaluatYear] = useState('')
+  const [evaluatCmnt, setevaluatCmnt] = useState('')
 
     const optionCity = [
       {
@@ -79,6 +82,11 @@ const Members = () => {
     // }
   }
 
+  const handleClickEvaluate = (member) => {
+    setmemberSelected(member)
+    setopenmodalevaluate(true)
+  }
+
   const  toggleCustomJustified = (tab) => {
 		setactiveTabJustify(tab)
 	}
@@ -114,6 +122,12 @@ const Members = () => {
       {
         Header: "Accès",
         accessor: "Role",
+        disableFilters: true,
+        filterable: false,
+      },
+      {
+        Header: "Évaluation",
+        accessor: "Evaluation",
         disableFilters: true,
         filterable: false,
       },
@@ -211,6 +225,24 @@ const Members = () => {
     })
   }
 
+  const saveEvaluate = async () =>{
+    const Data = JSON.parse(localStorage.getItem("authUser"))
+
+    console.log(memberSelected?.id  + " " + evaluatYear + " " + evaluatCmnt)
+    await SaveEvaluateMember(Data.id,memberSelected?.id,evaluatYear,evaluatCmnt,Data.token).then(res =>{
+      console.log(res)
+      if(res['status'] == "success"){
+        toastr.success("L'évaluation a été ajoutée avec succès!")
+        setevaluatCmnt('')
+        setevaluatYear('')
+        setopenmodalevaluate(false)
+      }
+    }).catch(err =>{
+      toastr.success("Erreur lors de l'ajout de l'évaluation. Veuillez réessayer.")
+
+    })
+  }
+
   
 
   return (
@@ -221,6 +253,7 @@ const Members = () => {
             title="Gestion des membres"
             breadcrumbItems={[]}
           />
+        
           <Card>
             <CardBody>
               <TableContainer
@@ -234,6 +267,7 @@ const Members = () => {
                 // openModalUpdate={openModal}
                 // isAddOptions={true}
                 handleClickMember={handleClickMember}
+                handleClickEvaluate={handleClickEvaluate}
                 dropdownData = {dropdownValues}
                 userData={User}
               />
@@ -366,16 +400,53 @@ const Members = () => {
                       </React.Fragment>
 											</TabPane>
                       <div style={{display : 'flex', alignItems : 'center' , justifyContent : 'center',margin : 10}}>
-                                 <Button
-                                     type="button"
-                                     color="primary" className="waves-effect waves-light"
-                                     onClick={updateProfileMemeber}
-                                 >
-                                     Mise à jour
-                                 </Button>
-                            </div>
+                          <Button
+                              type="button"
+                              color="primary" className="waves-effect waves-light"
+                              onClick={updateProfileMemeber}
+                          >
+                              Mise à jour
+                          </Button>
+                      </div>
                 </TabContent>
 
+          </Modal>
+
+          <Modal
+                size="xl"
+                isOpen={openmodalevaluate}
+                toggle={() =>{setopenmodalevaluate(false)}}
+                >
+                <ModalHeader >
+                  Evaluation le membre : {memberSelected?.NomComplet}
+                </ModalHeader>
+                <ModalBody>
+                    <Row>
+                      <Col lg="12">
+                          <div className="mb-3">
+                              <Label className="form-label" htmlFor="basicpill-address-input1">Année d'évaluation</Label>
+                              <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>setevaluatYear(e.target.value)} value={evaluatYear}/>
+                          </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                    <Col lg="12">
+                        <div className="mb-3">
+                            <Label className="form-label" htmlFor="basicpill-address-input1">Commentaire</Label>
+                            <textarea id="basicpill-address-input1" className="form-control" rows="2" onChange={(e) =>setevaluatCmnt(e.target.value)} value={evaluatCmnt}></textarea>
+                        </div>
+                    </Col>
+                    </Row>
+                </ModalBody>
+                <div style={{display : 'flex', alignItems : 'center' , justifyContent : 'center',margin : 10}}>
+                          <Button
+                              type="button"
+                              color="primary" className="waves-effect waves-light"
+                              onClick={saveEvaluate}
+                          >
+                              Enregistrer
+                          </Button>
+                      </div>
           </Modal>
 
           

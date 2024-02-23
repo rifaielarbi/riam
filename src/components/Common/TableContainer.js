@@ -13,9 +13,11 @@ import { Table, Row, Col, Button, Input, UncontrolledDropdown, DropdownToggle, D
 import { Filter, DefaultColumnFilter } from "./filters";
 import JobListGlobalFilter from "../../components/Common/GlobalSearchFilter";
 import ConfirmModal from "../Modal/ConfirmeModal";
-import { UpdateMemberRole } from "../../services/MembersServices/Api";
+import evaluation from '../../assets/icons/evaluation.png'
+import { ExportDataMembers, UpdateMemberRole } from "../../services/MembersServices/Api";
 import toastr from 'toastr'
 import 'toastr/build/toastr.min.css'
+import moment from "moment/moment";
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
@@ -77,6 +79,7 @@ const TableContainer = ({
   className,
   customPageSizeOptions,
   handleClickMember,
+  handleClickEvaluate,
   userData,
   dropdownData
 
@@ -188,10 +191,33 @@ const TableContainer = ({
 
       }
     })
-
-
-    
   }
+
+  const handleExportData = async () => {
+    const Data = JSON.parse(localStorage.getItem("authUser"));
+    const filename = "Exportation-Data-Members-" + moment(new Date()).format('DD-MM-YYYY-hh-mm') + ".xlsx";
+  
+    try {
+      const response = await ExportDataMembers(Data.id, filename, Data.token);
+  
+      const blobData = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = window.URL.createObjectURL(blobData);
+  
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+  
+      link.click();
+  
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error:', error.message);
+      // Handle the error as needed
+    }
+  };
+ 
 
   const getRolelabel = (id) =>{
     const rolelabel = Roles.find((item) => item.id === id)
@@ -282,6 +308,13 @@ const TableContainer = ({
       </Row>
 
       <div className="table-responsive react-table" style={{paddingBottom : 250}}>
+        <div style={{ float : 'right',margin : 10,}}>
+          <Button color="primary" onClick={handleExportData} style={{display : 'flex', alignItems : 'center', justifyContent : 'center'}}>
+            <span> Exporter les donnes </span>
+
+            <i className=" ri-file-excel-2-fill" style={{marginLeft : 5}}></i>
+          </Button>
+        </div>
         <Table bordered hover {...getTableProps()} className={className} style={{paddingBottom : 10}}>
           <thead className="table-light table-nowrap">
             {headerGroups.map(headerGroup => (
@@ -306,6 +339,17 @@ const TableContainer = ({
                 <Fragment key={row.getRowProps().key}>
                   <tr >
                     {row.cells.map(cell => {
+
+                      if(cell.column.Header == 'Évaluation') {  
+                        return(
+                        <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickEvaluate(row.original)}}>
+                          <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
+                          <img  src={require('../../assets/icons/evaluation.png')} height={30} width={30}/> 
+
+                          </div>
+                        </td>
+                        )
+                      }
                       if(cell.column.Header != 'Accès') {
                       return (
                         <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickMember(row.original)}}>
