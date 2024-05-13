@@ -105,6 +105,8 @@ import ForgetPwd1 from "../pages/AuthenticationInner/ForgetPassword";
 import UploadFiles from '../pages/UploadFiles'
 import Files from '../pages/Files'
 import Profile from '../pages/Profile'
+import DemandeLab from '../pages/DemandeLab'
+import DemandeLabList from '../pages/DemandeLabList'
 
 
 const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -202,6 +204,10 @@ const authProtectedRoutes = [
 	{ path: "/files", component: <Files /> },
 
 	{ path: "/profile", component: <Profile /> },
+	{ path: "/DemandeLab", component: <DemandeLab /> },
+	{ path: "/DemandeLabList", component: <DemandeLabList /> },
+
+
 
 
 

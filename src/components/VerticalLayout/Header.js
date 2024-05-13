@@ -30,7 +30,7 @@ import { withTranslation } from "react-i18next";
 import { toggleRightSidebar } from "../../store/actions";
 
 
-import logolight from "../../assets/images/Logo-RIAM.png";
+import logolight from "../../assets/images/Logo-RIAM_B.png";
 
 class Header extends Component {
     constructor(props) {

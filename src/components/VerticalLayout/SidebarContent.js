@@ -128,15 +128,33 @@ class SidebarContent extends Component {
                 </Link>
               </li>
             }
+
+            {(Data?.role == 4 || Data?.role == 1) &&
+              <li>
+                <Link to="/DemandeLab" className="waves-effect">
+                  <i className=" ri-file-edit-line"></i>
+                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
+                  <span className="ms-1">{this.props.t('DemandeLab')}</span>
+                </Link>
+              </li>
+            }
+
             <li>
-              <Link to="/files" className="waves-effect">
-                <i className=" ri-folder-2-fill"></i>
-                {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                <span className="ms-1">{this.props.t('Bibliothèque')}</span>
+              <Link to="/DemandeLabList" className="waves-effect">
+                <i className=" ri-file-list-line"></i>
+                <span className="ms-1">{this.props.t('DemandeLablist')}</span>
               </Link>
             </li>
 
-            {/* <li>
+            <li>
+              <Link to="/files" className="waves-effect">
+                <i className=" ri-folder-2-fill"></i>
+                <span className="ms-1">{this.props.t('Bibliothèque')}</span>
+              </Link>
+            </li>
+            
+
+            <li>
               <Link to="/calendar" className=" waves-effect">
                 <i className="ri-calendar-2-line"></i>
                 <span className="ms-1">{this.props.t('Calendar')}</span>
@@ -322,7 +340,7 @@ class SidebarContent extends Component {
                   </ul>
                 </li>
               </ul>
-            </li> */}
+            </li> 
 
           </ul>
         </div>

@@ -78,7 +78,7 @@ const TableContainer = ({
   customPageSize,
   className,
   customPageSizeOptions,
-  handleClickMember,
+  handleClickRow,
   handleClickEvaluate,
   userData,
   dropdownData
@@ -125,6 +125,10 @@ const TableContainer = ({
   );
   const Roles = [
     {
+      id : 1,
+      label : 'Admin'
+    },
+    {
       id : 2,
       label : 'Membre'
     },
@@ -134,19 +138,23 @@ const TableContainer = ({
     },
     {
       id : 4,
-      label : 'Distributeurs/producteurs'
+      label : 'Producteur'
     },
     {
       id : 5,
-      label : 'COS'
+      label : 'Membre du COS'
     },
     {
       id : 6,
-      label : 'BE'
+      label : 'Membre du BE'
     },
     {
       id : 7,
-      label : 'Candidats avec CV'
+      label : 'Candidat'
+    },
+    {
+      id : 8,
+      label : 'Distributeur'
     }
 
   ]
@@ -220,8 +228,10 @@ const TableContainer = ({
  
 
   const getRolelabel = (id) =>{
+
     const rolelabel = Roles.find((item) => item.id === id)
     return rolelabel['label']
+
   }
 
   // useEffect(() =>{
@@ -270,7 +280,7 @@ const TableContainer = ({
                 onClick={handleOrderClicks}
               >
                 <i className="mdi mdi-plus me-1" />
-                Add New Order
+                  Add New Order
               </Button>
             </div>
           </Col>
@@ -285,7 +295,7 @@ const TableContainer = ({
                 onClick={handleUserClick}
               >
                 <i className="mdi mdi-plus-circle-outline me-1" />
-                Create New User
+                  Create New User
               </Button>
             </div>
           </Col>
@@ -300,7 +310,7 @@ const TableContainer = ({
                 onClick={handleCustomerClick}
               >
                 <i className="mdi mdi-plus me-1" />
-                New Customers
+                  New Customers
               </Button>
             </div>
           </Col>
@@ -309,11 +319,11 @@ const TableContainer = ({
 
       <div className="table-responsive react-table" style={{paddingBottom : 250}}>
         <div style={{ float : 'right',margin : 10,}}>
-          <Button color="primary" onClick={handleExportData} style={{display : 'flex', alignItems : 'center', justifyContent : 'center'}}>
+          {/* <Button color="primary" onClick={handleExportData} style={{display : 'flex', alignItems : 'center', justifyContent : 'center'}}>
             <span> Exporter les donnes </span>
 
             <i className=" ri-file-excel-2-fill" style={{marginLeft : 5}}></i>
-          </Button>
+          </Button> */}
         </div>
         <Table bordered hover {...getTableProps()} className={className} style={{paddingBottom : 10}}>
           <thead className="table-light table-nowrap">
@@ -340,19 +350,45 @@ const TableContainer = ({
                   <tr >
                     {row.cells.map(cell => {
 
-                      if(cell.column.Header == 'Évaluation') {  
-                        return(
-                        <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickEvaluate(row.original)}}>
-                          <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
-                          <img  src={require('../../assets/icons/evaluation.png')} height={30} width={30}/> 
+                      console.log(row.original.evaluated)
 
-                          </div>
-                        </td>
+                    
+
+                      if(cell.column.Header == 'Évaluation') {  
+                        if(row.original.evaluated == 0){
+                        return(
+                          <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickEvaluate(row.original)}}>
+                            <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
+                            <img  src={require('../../assets/icons/plan.png')} height={30} width={30}/> 
+
+                            </div>
+                          </td>
                         )
+                        } else{
+
+                        return(
+                            <td key={cell.id} {...cell.getCellProps()}>
+                              <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
+                              <img  src={require('../../assets/icons/check-mark.png')} height={30} width={30}/> 
+  
+                              </div>
+                            </td>
+                          )
+                        }
+
+                      }
+                      if(cell.column.Header == "Date d'ajoute") {
+                        return (
+                          <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickRow(row.original)}}>
+                            {/* {cell.render("Cell")}  */}
+                            {moment(cell.render("Cell")).format('DD-MM-YYYY')}
+                          </td>
+                        );
+
                       }
                       if(cell.column.Header != 'Accès') {
                       return (
-                        <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickMember(row.original)}}>
+                        <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickRow(row.original)}}>
                           {cell.render("Cell")}
                         </td>
                       );
@@ -363,12 +399,15 @@ const TableContainer = ({
                             {dropdownValues[cell.row.original.id] || dropdownData[cell.row.original.id] }{" "} <i className="mdi mdi-chevron-down"></i>
                             </DropdownToggle>
                             <DropdownMenu onChange={(value) => {alert(value)}} style={{ zIndex: 1000 }}>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,2)}} >Membre</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,3)}} >Consommateurs</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Distributeurs/producteurs</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,5)}}>COS</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,6)}}>BE</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,7)}}>Candidats avec CV</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,1)}}>Admin</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,2)}}>Membre</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,3)}}>Consommateurs</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Producteur</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,5)}}>Membre du COS</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,6)}}>Membre du BE</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,7)}}>Candidats</DropdownItem>
+                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Distributeur</DropdownItem>
+
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         )

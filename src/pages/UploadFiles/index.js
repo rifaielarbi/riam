@@ -70,8 +70,6 @@ const Index = ({props}) => {
 
   const handleSaveFile = async () =>{
     const formData = new FormData();
-    
-
     for (let file of selectedFiles){
       const additionalData = {
         "UserId" : Data.id,

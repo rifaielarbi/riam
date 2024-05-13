@@ -55,6 +55,7 @@ const Index = ({props}) => {
 
 
   const handleDownloadFile = async (filename) => {
+    alert(filename)
     try {
       const response = await DownloadFile(filename, Data.token);
       console.log(response)

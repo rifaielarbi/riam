@@ -125,16 +125,15 @@ const Members = () => {
         disableFilters: true,
         filterable: false,
       },
-      {
-        Header: "Évaluation",
-        accessor: "Evaluation",
-        disableFilters: true,
-        filterable: false,
-      },
+     
     ],
   );
 
   const Roles = [
+    {
+      id : 1,
+      label : 'Admin'
+    },
     {
       id : 2,
       label : 'Membre'
@@ -145,19 +144,23 @@ const Members = () => {
     },
     {
       id : 4,
-      label : 'Distributeurs/producteurs'
+      label : 'Producteur'
     },
     {
       id : 5,
-      label : 'COS'
+      label : 'Membre du COS'
     },
     {
       id : 6,
-      label : 'BE'
+      label : 'Membre du BE'
     },
     {
       id : 7,
-      label : 'Candidats avec CV'
+      label : 'Candidat'
+    },
+    {
+      id : 8,
+      label : 'Distributeur'
     }
 
   ]
@@ -266,7 +269,7 @@ const Members = () => {
                 customPageSize={10}
                 // openModalUpdate={openModal}
                 // isAddOptions={true}
-                handleClickMember={handleClickMember}
+                handleClickRow={handleClickMember}
                 handleClickEvaluate={handleClickEvaluate}
                 dropdownData = {dropdownValues}
                 userData={User}

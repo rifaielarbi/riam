@@ -25,6 +25,7 @@ const Profile = () => {
     const [tel , settel]  = useState(Data['profileUser']?.Tel || "")
     const [adr_res , setadr_res]  = useState(Data['profileUser']?.adrs_res || "")
     const [adr_ferm , setadr_ferm]  = useState(Data['profileUser']?.adrs_ferme || "")
+    const [name_ferme , setname_ferme]  = useState(Data['profileUser']?.name_ferme || "")
     const [Email, setEmail] = useState(Data['email'])
     const [DaysSelected, setDaysSelected] = useState(Data['profileUser']?.days_dispo ? JSON.parse(Data['profileUser'].days_dispo) : []);
     const [openmodal, setopenModal] = useState(false)
@@ -168,6 +169,7 @@ const Profile = () => {
                         City:selectedCity.value,
                         adrs_res : adr_res,
                         adrs_ferme : adr_ferm,
+                        name_ferme : name_ferme,
                         adr_google : "gogole maps adress",
                         days_dispo : JSON.stringify(DaysSelected),
                         lat : "33.222121",
@@ -373,6 +375,14 @@ const Profile = () => {
                                                         )}
                                                         {tab === 2 && (
                                                             <React.Fragment>
+                                                                <Row>
+                                                                <Col lg="12">
+                                                                        <div className="mb-3">
+                                                                            <Label className="form-label" htmlFor="basicpill-phoneno-input3">Nom de la ferme</Label>
+                                                                            <Input type="text" className="form-control" id="basicpill-phoneno-input3" onChange={(e) =>setname_ferme(e.target.value)} value={name_ferme}/>
+                                                                        </div>
+                                                                    </Col>
+                                                                </Row>
                                                                 <Row>
                                                                     <Col lg="12">
                                                                         <div className="mb-3">
