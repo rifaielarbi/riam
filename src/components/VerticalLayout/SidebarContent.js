@@ -151,19 +151,31 @@ class SidebarContent extends Component {
               </Link>
             </li>
             }
-
-            <li>
-              <Link to="/files" className="waves-effect">
-                <i className=" ri-folder-2-fill"></i>
-                <span className="ms-1">{this.props.t('Bibliothèque')}</span>
-              </Link>
-            </li>
             <li>
               <Link to="/formation" className="waves-effect">
                 <i className=" fas fa-pen"></i>
                 <span className="ms-1">Formation</span>
               </Link>
             </li>
+            <li>
+              <Link to="/mes-fichier" className="waves-effect">
+                <i className=" ri-article-line"></i>
+                <span className="ms-1">Mes Fichier</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/files" className="waves-effect">
+                <i className=" ri-folder-2-fill"></i>
+                <span className="ms-1">{this.props.t('Bibliothèque')}</span>
+              </Link>
+            </li>
+
+
+
+
+
+
+
             
             {/* theme Pages */}
              <li>
