@@ -107,6 +107,7 @@ import Files from '../pages/Files'
 import Profile from '../pages/Profile'
 import DemandeLab from '../pages/DemandeLab'
 import DemandeLabList from '../pages/DemandeLabList'
+import Formation from "../pages/Formation/Formation";
 
 
 const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -190,6 +191,11 @@ const authProtectedRoutes = [
 
 	//chat
 	{ path: "/chat", component: <Chat /> },
+
+
+	//formation
+	
+	{ path: "/formation", component: <Formation /> },
 
 	//calendar
 	{ path: "/calendar", component: <Calendar /> },

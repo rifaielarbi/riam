@@ -158,9 +158,15 @@ class SidebarContent extends Component {
                 <span className="ms-1">{this.props.t('Bibliothèque')}</span>
               </Link>
             </li>
+            <li>
+              <Link to="/formation" className="waves-effect">
+                <i className=" fas fa-pen"></i>
+                <span className="ms-1">Formation</span>
+              </Link>
+            </li>
             
             {/* theme Pages */}
-            {/* <li>
+             <li>
               <Link to="/calendar" className=" waves-effect">
                 <i className="ri-calendar-2-line"></i>
                 <span className="ms-1">{this.props.t('Calendar')}</span>
@@ -346,7 +352,7 @@ class SidebarContent extends Component {
                   </ul>
                 </li>
               </ul>
-            </li>  */}
+            </li>  
 
           </ul>
         </div>
