@@ -6,9 +6,24 @@
     margin-top: -26px;
 
 }
+.small-card {
+    height: 200px; 
+}
+
+.small-card-image {
+    height: 100px; 
+    object-fit: cover;
+}
+
+.small-card-date {
+    font-size: 0.8rem; 
+}
 
 
-
+.holder-image{
+    position: relative;
+    left:-11px;
+} 
 
 .input-uplaoding{
     height: 377px;

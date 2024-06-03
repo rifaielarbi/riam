@@ -5,6 +5,7 @@ import Dropzone from "react-dropzone";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css";
 import Select from "react-select";
+import Breadcrumbs from '../../components/Common/Breadcrumb';
 
 const Evenment = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -67,7 +68,10 @@ const Evenment = () => {
                 <Container fluid={true}>
                     <Row>
                         <Col xs={12}>
-                            <CardTitle className="text-3xl mb-4"><h3>Ajouter Evenment</h3></CardTitle>
+                            <Breadcrumbs
+                                title="Ajouter Evenments"
+                                breadcrumbItems={[]}
+                            />                            
                             <Card>
                                 <CardBody>
                                     <AvForm onValidSubmit={handleFormData}>
@@ -214,7 +218,7 @@ const Evenment = () => {
                                         </Row>
                                         <div className="d-flex justify-content-end">
                                             <Button color="success">
-                                            sauvgarder
+                                                sauvgarder
 
                                             </Button>
                                         </div>

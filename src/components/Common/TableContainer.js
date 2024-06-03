@@ -328,7 +328,7 @@ const TableContainer = ({
         <Table bordered hover {...getTableProps()} className={className} style={{paddingBottom : 10}}>
           <thead className="table-light table-nowrap">
             {headerGroups.map(headerGroup => (
-              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
+              <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}  >
                 {headerGroup.headers.map(column => (
                   <th key={column.id}>
                     <div className="mb-2" {...column.getSortByToggleProps()}>
@@ -342,7 +342,7 @@ const TableContainer = ({
             ))}
           </thead>
 
-          <tbody {...getTableBodyProps()}>
+          <tbody {...getTableBodyProps()} style={{ cursor: 'pointer' }}>
             {page.map(row => {
               prepareRow(row);
               return (

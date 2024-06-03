@@ -42,7 +42,6 @@ function Formation() {
             description: newFormation.description
         };
         setFormations([...formations, newEntry]);
-        // Vider les champs après l'ajout
         setNewFormation({
             type: "",
             description: ""
@@ -60,7 +59,10 @@ function Formation() {
     return (
         <React.Fragment>
             <div className="page-content">
-                <h2>Demande de Formation</h2>
+                <Breadcrumbs
+                    title="Demande de Formation"
+                    breadcrumbItems={[]}
+                />
                 <div className="bg-white shadow p-3 mb-5 rounded">
                     <div className='d-flex justify-content-center justify-content-around mt-5'>
                         <div className="form-check mb-3">
