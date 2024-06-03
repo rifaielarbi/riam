@@ -164,6 +164,12 @@ class SidebarContent extends Component {
               </Link>
             </li>
             <li>
+              <Link to="/evenments" className="waves-effect">
+              <i className="mdi-content-paste"></i>
+                  <span className="ms-1">Ajouter Evenment</span>
+              </Link>
+            </li>
+            <li>
               <Link to="/files" className="waves-effect">
                 <i className=" ri-folder-2-fill"></i>
                 <span className="ms-1">{this.props.t('Bibliothèque')}</span>

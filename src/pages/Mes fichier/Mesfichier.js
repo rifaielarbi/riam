@@ -31,7 +31,7 @@ const Mesfichier = ({ props }) => {
             ...files.map(file => ({
                 name: file.name,
                 size: file.size,
-                date: new Date().toLocaleDateString() // Assuming date is current date/time
+                date: new Date().toLocaleDateString() // Supposons que la date est la date/heure actuelle
             }))
         ]);
     };
@@ -45,14 +45,14 @@ const Mesfichier = ({ props }) => {
     };
 
     const handleSendFiles = () => {
-        console.log("Selected Files:", selectedFiles);
+        console.log("Fichiers sélectionnés:", selectedFiles);
         setSelectedFiles([]);
-        // setShowFileUploadModal(false); // Commented out to keep the modal open after sending files
+        // setShowFileUploadModal(false); // Commenté pour garder la modal ouverte après l'envoi des fichiers
     };
 
     const FileUploadModal = () => (
         <Modal isOpen={showFileUploadModal} toggle={toggleFileUploadModal} size="xl">
-            <ModalHeader toggle={toggleFileUploadModal}>FORM FILE UPLOAD</ModalHeader>
+            <ModalHeader toggle={toggleFileUploadModal}>FORMULAIRE DE TÉLÉVERSEMENT DE FICHIER</ModalHeader>
             <ModalBody>
                 <Form>
                     <Dropzone
@@ -65,7 +65,7 @@ const Mesfichier = ({ props }) => {
                                     <div className="mb-3">
                                         <i className="display-4 text-muted ri-upload-cloud-2-line"></i>
                                     </div>
-                                    <h4>Drop files here or click to upload.</h4>
+                                    <h4>Déposez les fichiers ici ou cliquez pour télécharger.</h4>
                                 </div>
                             </div>
                         )}
@@ -73,7 +73,7 @@ const Mesfichier = ({ props }) => {
                     {selectedFiles.length > 0 && (
                         <Card className="mt-3">
                             <CardBody>
-                                <CardTitle>Selected Files</CardTitle>
+                                <CardTitle>Fichiers Sélectionnés</CardTitle>
                                 {selectedFiles.map((file, index) => (
                                     <Row key={index} className="align-items-center mb-2">
                                         <Col className="col-auto">
@@ -88,7 +88,7 @@ const Mesfichier = ({ props }) => {
                                     </Row>
                                 ))}
                                 <div className="text-center mt-4">
-                                    <Button color="primary" type="button" className="waves-effect waves-light" onClick={handleSendFiles}>Send Files</Button>
+                                    <Button color="primary" type="button" className="waves-effect waves-light" onClick={handleSendFiles}>Envoyer les fichiers</Button>
                                 </div>
                             </CardBody>
                         </Card>
@@ -112,13 +112,13 @@ const Mesfichier = ({ props }) => {
             <div className="page-content">
                 <Container fluid>
                     {/* Render Breadcrumb */}
-                    {/* <Breadcrumbs title="Add Product" breadcrumbItems={breadcrumbItems} /> */}
+                    {/* <Breadcrumbs title="Ajouter un produit" breadcrumbItems={breadcrumbItems} /> */}
                     <Row>
                         <Col lg={12}>
                             <Card>
                     <div className="d-flex justify-content-end m-2 mt-2">
                         <Button color="success" onClick={toggleFileUploadModal}>
-                            Ajoute fichier
+                            Ajouter fichier
                         </Button>
                     </div>
                                 <CardBody>
@@ -145,7 +145,7 @@ const Mesfichier = ({ props }) => {
                                             <span>Taille fichier</span>
                                         </div>
                                         <div style={{ width: "10%", cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
-                                            <span>Telecharger</span>
+                                            <span>Télécharger</span>
                                         </div>
                                     </div>
                                 </CardBody>
@@ -154,7 +154,7 @@ const Mesfichier = ({ props }) => {
                     </Row>
                 </Container>
             </div>
-            {/* Render the FileUploadModal here */}
+            {/* Afficher la FileUploadModal ici */}
             <FileUploadModal />
         </React.Fragment>
     );

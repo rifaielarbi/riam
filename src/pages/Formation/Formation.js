@@ -99,8 +99,14 @@ function Formation() {
                     </div>
                     {formError && <p className="text-danger">{formError}</p>}
                     <div className="mb-3">
-                        <Label className="form-label">Description</Label>
-                        <span> Maximum 200 caractères</span>
+                        <Label className="form-label">
+                            Description
+                            <p className="text-gray-500">
+                                <span>Maximum 200 caractères</span>
+                            </p>
+                        </Label>
+
+
                         <textarea
                             className="form-control"
                             rows="5"
@@ -149,7 +155,7 @@ function Formation() {
                     </Card>
                     <div className="d-flex justify-content-end">
                         <Button color="success" onClick={() => console.log(formations)}>
-                        Envoyer formation 
+                            Envoyer formation
                         </Button>
                     </div>
                 </div>
