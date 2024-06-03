@@ -47,7 +47,6 @@ const Mesfichier = ({ props }) => {
     const handleSendFiles = () => {
         console.log("Fichiers sélectionnés:", selectedFiles);
         setSelectedFiles([]);
-        // setShowFileUploadModal(false); // Commenté pour garder la modal ouverte après l'envoi des fichiers
     };
 
     const FileUploadModal = () => (
@@ -111,16 +110,18 @@ const Mesfichier = ({ props }) => {
         <React.Fragment>
             <div className="page-content">
                 <Container fluid>
-                    {/* Render Breadcrumb */}
-                    {/* <Breadcrumbs title="Ajouter un produit" breadcrumbItems={breadcrumbItems} /> */}
+                    <Breadcrumbs
+                        title="Ajouter ficher"
+                        breadcrumbItems={[]}
+                    />
                     <Row>
                         <Col lg={12}>
                             <Card>
-                    <div className="d-flex justify-content-end m-2 mt-2">
-                        <Button color="success" onClick={toggleFileUploadModal}>
-                            Ajouter fichier
-                        </Button>
-                    </div>
+                                <div className="d-flex justify-content-end m-2 mt-2">
+                                    <Button color="success" onClick={toggleFileUploadModal}>
+                                        Ajouter fichier
+                                    </Button>
+                                </div>
                                 <CardBody>
                                     <div style={{
                                         display: 'flex',
@@ -154,7 +155,6 @@ const Mesfichier = ({ props }) => {
                     </Row>
                 </Container>
             </div>
-            {/* Afficher la FileUploadModal ici */}
             <FileUploadModal />
         </React.Fragment>
     );

@@ -269,6 +269,7 @@ const Members = () => {
                 customPageSize={10}
                 // openModalUpdate={openModal}
                 // isAddOptions={true}
+                
                 handleClickRow={handleClickMember}
                 handleClickEvaluate={handleClickEvaluate}
                 dropdownData = {dropdownValues}
