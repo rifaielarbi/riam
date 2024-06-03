@@ -109,6 +109,7 @@ import DemandeLab from '../pages/DemandeLab'
 import DemandeLabList from '../pages/DemandeLabList'
 import Formation from "../pages/Formation/Formation";
 import Mesfichier from "../pages/Mes fichier/Mesfichier";
+import Evenment from "../pages/Evenment/Evenment";
 
 
 const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -201,9 +202,14 @@ const authProtectedRoutes = [
 
 	{ path: "/mes-fichier", component: <Mesfichier/>},
 
+
+	//evenments
+
+	{ path: "/evenments" , component: <Evenment/>},
+
 	//calendar
-	{ path: "/calendar", component: <Calendar /> },
-		Data?.role == 1 && 	{ path: "/members", component: <Members /> },
+	// { path: "/calendar", component: <Calendar /> },
+	// 	Data?.role == 1 && 	{ path: "/members", component: <Members /> },
 
 	
 
