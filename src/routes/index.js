@@ -215,7 +215,7 @@ const authProtectedRoutes = [
 
 	
 
-	{ path: "/dashboard", component: <Dashboard /> },
+	// { path: "/dashboard", component: <Dashboard /> },
 
 		Data?.role == 1 &&  { path: "/adfiles", component: <UploadFiles /> },
 
@@ -232,7 +232,7 @@ const authProtectedRoutes = [
 
 
 	// this route should be at the end of all other routes
-	{ path: "/", exact: true, component: <Navigate to="/dashboard" /> },
+	// { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
 ];
 
 const publicRoutes = [
