@@ -111,6 +111,7 @@ import Formation from "../pages/Formation/Formation";
 import Mesfichier from "../pages/Mes fichier/Mesfichier";
 import Evenment from "../pages/Evenment/Evenment";
 import Listevenment from "../pages/Evenment/Listevenment";
+import Formationad from "../pages/Formation/Formation-ad";
 
 
 const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -208,6 +209,7 @@ const authProtectedRoutes = [
 
 	{ path: "/evenments" , component: <Evenment/>},
 	{ path: "/List-evenment", component: <Listevenment/> },
+	{path: "/List-event-admins", component: <Formationad/>},
 
 	//calendar
 	{ path: "/calendar", component: <Calendar /> },
