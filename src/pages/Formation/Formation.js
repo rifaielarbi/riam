@@ -220,6 +220,7 @@ function Formation() {
                     <div className="d-flex justify-content-end">
                         <Button color="success" onClick={handleSendFormation}>
                             Envoyer formation
+                            
                         </Button>
                     </div>
                 </div>
