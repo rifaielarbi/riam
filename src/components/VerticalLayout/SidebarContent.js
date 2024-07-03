@@ -141,26 +141,23 @@ const SidebarContent = ({ t }) => {
               </Link>
             </li>
           }
-          {Data?.role === 4 &&
-            <li>
-              <Link to="/point-de-vente" className="waves-effect">
-                <i className="ri-store-3-fill"></i>
-                <span className="ms-1">Point De Vente</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/mes-fichier" className="waves-effect">
-                <i className=" ri-article-line"></i>
-                <span className="ms-1">Mes Fichier</span>
-              <Link to="/mes-fichier" className="waves-effect"
-                      style={isActive('/mes-fichier') ? { color: 'white' } : { color : "#8590a5"  }}
+          {Data?.role === 4 && (
+            <>
+                <li>
+                    <Link to="/point-de-vente" className="waves-effect">
+                        <i className="ri-store-3-fill"></i>
+                        <span className="ms-1">Point De Vente</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/mes-fichier" className="waves-effect" style={isActive('/mes-fichier') ? { color: 'white' } : { color: '#8590a5' }}>
+                        <i className="ri-article-line" style={isActive('/mes-fichier') ? { fontWeight: 'bold', color: 'white' } : { fontWeight: '500', color: '#8590a5' }}></i>
+                        <span className="ms-1">Mes fichiers</span>
+                    </Link>
+                </li>
+            </>
+        )}
 
-              >
-                <i className="ri-article-line" style={isActive('/mes-fichier') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
-                <span className="ms-1">Mes fichiers</span>
-              </Link>
-            </li>
-          }
           {Data?.role === 3 &&
             <li>
               <Link to="/evenments" className="waves-effect">
