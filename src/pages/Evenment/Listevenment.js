@@ -14,7 +14,7 @@ const Listevenment = () => {
             lieu: "Conference Hall A",
             description: "A conference showcasing the latest in tech innovations.",
             city: "San Francisco",
-            date: "2024-07-10",
+            date: "2024-07-10", 
             image: defaultEventImage,
         },
         {
