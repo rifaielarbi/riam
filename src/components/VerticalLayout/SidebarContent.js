@@ -143,6 +143,15 @@ const SidebarContent = ({ t }) => {
           }
           {Data?.role === 4 &&
             <li>
+              <Link to="/point-de-vente" className="waves-effect">
+                <i className="ri-store-3-fill"></i>
+                <span className="ms-1">Point De Vente</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/mes-fichier" className="waves-effect">
+                <i className=" ri-article-line"></i>
+                <span className="ms-1">Mes Fichier</span>
               <Link to="/mes-fichier" className="waves-effect"
                       style={isActive('/mes-fichier') ? { color: 'white' } : { color : "#8590a5"  }}
 
