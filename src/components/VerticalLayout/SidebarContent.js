@@ -152,22 +152,22 @@ const SidebarContent = ({ t }) => {
               </Link>
             </li>
           }
-          {Data?.role === 3 &&
+          {/* {Data?.role === 3 && */}
             <li>
               <Link to="/evenments" className="waves-effect">
                 <i className="mdi-content-paste" style={isActive('/evenments') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
                 <span className="ms-1">Ajouter Evenment</span>
               </Link>
             </li>
-          }
-          {Data?.role === 3 &&
+          {/* } */}
+          {/* {Data?.role === 3 && */}
             <li>
               <Link to="/List-evenment" className="waves-effect">
                 <i className="ri-file-paper-2-line" style={isActive('List-evenment') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
                 <span className="ms-1">List Evenment</span>
               </Link>
             </li>
-          }
+          {/* } */}
           <li>
             <Link to="/files" className="waves-effect"
                   style={isActive('/files') ? { color: 'white' } : { color : "#8590a5"  }}

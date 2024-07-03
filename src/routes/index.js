@@ -215,7 +215,7 @@ const authProtectedRoutes = [
 
 	
 
-	// { path: "/dashboard", component: <Dashboard /> },
+	{ path: "/dashboard", component: <Dashboard /> },
 
 		Data?.role == 1 &&  { path: "/adfiles", component: <UploadFiles /> },
 
