@@ -30,6 +30,32 @@ const SaveFile = async (formData) =>{
       }
 }
 
+const SaveUserFile = async (formData) =>{
+  // const DataFile = {
+  //     "UserId" : UserId,
+  //     "fileName" : fileName,
+  //     "filepath" : filepath,
+  //     "acces" : acces
+  // }
+  // console.log(DataFile)
+
+  const options = {
+      baseURL: BASE_URL,
+      responseType: 'json',
+      headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+  }
+
+  const instance = axios.create(options)
+    try {
+      const response = await instance.post("/api/UserFile/saveFile",formData ); 
+      return response.data;
+    } catch (error) { 
+        throw error.response 
+    }
+}
+
 
 const GetlistFiles = async (Role,Token)  => {
   const options = {
@@ -45,6 +71,26 @@ const GetlistFiles = async (Role,Token)  => {
   const instance = axios.create(options)
   try {
     const response = await instance.get("/api/files/listFiles?Role=" + Role ); 
+    return response.data;
+  } catch (error) { 
+      throw error.response 
+  }
+}
+
+const GetlistUserFiles = async (userId,Token)  => {
+  const options = {
+    baseURL: BASE_URL,
+    responseType: 'json',
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin':"*/*",
+        'Authorization': `Bearer ${Token}`
+    },
+  }
+  const instance = axios.create(options)
+  try {
+    const response = await instance.get("/api/UserFile/listFiles?userId=" + userId ); 
     return response.data;
   } catch (error) { 
       throw error.response 
@@ -76,4 +122,4 @@ const DownloadFile = async (filename, Token) => {
 
 
 
-export {SaveFile,GetlistFiles,DownloadFile}
+export {SaveFile,GetlistFiles,DownloadFile,SaveUserFile,GetlistUserFiles}

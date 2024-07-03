@@ -264,9 +264,8 @@
                         min-height: 55px;
                         transition: none;
                         
-                        &:hover,
-                        &:active,
-                        &:focus {
+                        &:hover
+                        {
                             color:  var(--#{$prefix}sidebar-menu-item-hover-color);
                         }
 

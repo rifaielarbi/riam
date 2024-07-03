@@ -7,17 +7,27 @@ const NonAuthLayout = (props) => {
   const capitalizeFirstLetter = (string) => {
     return string.charAt(1).toUpperCase() + string.slice(2);
   };
+  const UserData = JSON.parse(localStorage.getItem("authUser"))
 
   useEffect(() => {
     let currentage = capitalizeFirstLetter(window.location.pathname);
     currentage = currentage.replaceAll("-", " ");
     document.title = currentage + " | Espace RIAM";
+    console.log(UserData)
   }, []);
 
-  if (localStorage.getItem("authUser") ) {
+  if (UserData ) {
+    if(UserData.role == 1){
     return (
         <Navigate to={{ pathname: "/dashboard", state: { from: props.location } }} />
       );
+    } 
+    if(UserData.role == 4){
+      return (
+        <Navigate to={{ pathname: "/DemandeLab", state: { from: props.location } }} />
+      );
+    }
+
   } 
 
   if (localStorage.getItem("nonMember") == "true") {

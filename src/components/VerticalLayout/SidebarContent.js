@@ -1,14 +1,10 @@
-import React, { Component } from "react";
-
-// MetisMenu
+import React, { useEffect, useState } from "react";
 import MetisMenu from "metismenujs";
-// import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
-
-//i18n
+import { Link, useLocation } from "react-router-dom";
 import { withTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from "react-redux";
+import withRouter from "../Common/withRouter";
 
-import { connect } from "react-redux";
 import {
   changeLayout,
   changeLayoutWidth,
@@ -16,59 +12,39 @@ import {
   changeSidebarType,
   changePreloader
 } from "../../store/actions";
-import withRouter from "../Common/withRouter";
-const Data = JSON.parse(localStorage.getItem("authUser"))
 
-class SidebarContent extends Component {
+const Data = JSON.parse(localStorage.getItem("authUser"));
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      pathName: this.props.router.location.pathname,
-    };
+const SidebarContent = ({ t }) => {
+  const location = useLocation();
+  const [pathName, setPathName] = useState(location.pathname);
+  const dispatch = useDispatch();
+  const layoutState = useSelector(state => state.Layout);
 
-  }
+  useEffect(() => {
+    initMenu();
+  }, [location.pathname, layoutState.type]);
 
-  componentDidMount() {
-    this.initMenu();
-  }
+  const isActive = (path) => location.pathname === path;
 
-  UNSAFE_componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
 
-        if (this.props.type !== prevProps.type) {
-            this.initMenu();
-        }
-
-    }
-    if (this.props.router.location.pathname !== prevProps.router.location.pathname) {
-      this.setState({ pathName: this.props.router.location.pathname }, () => {
-        this.initMenu();
-      });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
-
-  initMenu() {
+  const initMenu = () => {
     new MetisMenu("#side-menu");
-    const { pathName } = this.state;
-
-
-    var matchingMenuItem = null;
-    var ul = document.getElementById("side-menu");
-    var items = ul.getElementsByTagName("a");
-    for (var i = 0; i < items.length; ++i) {
+    let matchingMenuItem = null;
+    const ul = document.getElementById("side-menu");
+    const items = ul.getElementsByTagName("a");
+    for (let i = 0; i < items.length; ++i) {
       if (pathName === items[i].pathname) {
         matchingMenuItem = items[i];
         break;
       }
     }
     if (matchingMenuItem) {
-      this.activateParentDropdown(matchingMenuItem);
+      //activateParentDropdown(matchingMenuItem);
     }
-  }
+  };
 
-  activateParentDropdown = item => {
+  const activateParentDropdown = (item) => {
     item.classList.add("active");
     const parent = item.parentElement;
 
@@ -82,8 +58,8 @@ class SidebarContent extends Component {
         const parent3 = parent2.parentElement;
 
         if (parent3) {
-          parent3.classList.add("mm-active"); // li
-          parent3.childNodes[0].classList.add("mm-active"); //a
+          parent3.classList.add("mm-active");
+          parent3.childNodes[0].classList.add("mm-active");
           const parent4 = parent3.parentElement;
           if (parent4) {
             parent4.classList.add("mm-active");
@@ -95,68 +71,77 @@ class SidebarContent extends Component {
     return false;
   };
 
-  render() {
-    return (
-      <React.Fragment>
-        <div id="sidebar-menu">
+  useEffect(() => {
+    setPathName(location.pathname);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
-          <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">{this.props.t('Menu')}</li>
-
+  return (
+    <React.Fragment>
+      <div id="sidebar-menu">
+        <ul className="metismenu list-unstyled" id="side-menu">
+          <li className="menu-title">{t('Menu')}</li>
+          {Data?.role === 1 &&
             <li>
-              <Link to="/dashboard" className="waves-effect">
-                <i className="ri-dashboard-line"></i>
-                {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                <span className="ms-1">{this.props.t('Dashboard')}</span>
+              <Link to="/dashboard" className="waves-effect"
+                style={isActive('/dashboard') ? { color: 'white'} : { color : "#8590a5" }}
+
+              >
+                <i className="ri-dashboard-line" style={{fontWeight : isActive('/dashboard') ? "bold" :  "500"}}></i>
+                <span className="ms-1">{t('Dashboard')}</span>
               </Link>
             </li>
-            {Data?.role == 1 &&
-              <li>
-                <Link to="/members" className="waves-effect">
-                  <i className=" ri-team-fill"></i>
-                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                  <span className="ms-1">{this.props.t('GestionDroit')}</span>
-                </Link>
-              </li>
-            }
-            {Data?.role == 1 &&
-              <li>
-                <Link to="/adfiles" className="waves-effect">
-                  <i className="ri-upload-fill"></i>
-                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                  <span className="ms-1">{this.props.t('upload files')}</span>
-                </Link>
-              </li>
-            }
+          }
+          {Data?.role === 1 &&
+            <li>
+              <Link to="/members" className="waves-effect"
+                style={isActive('/members') ? { color: 'white' } : { color : "#8590a5" }}
 
-            {(Data?.role == 4 || Data?.role == 1) &&
-              <li>
-                <Link to="/DemandeLab" className="waves-effect">
-                  <i className=" ri-file-edit-line"></i>
-                  {/* <span className="badge rounded-pill bg-success float-end">3</span> */}
-                  {/* <span className="ms-1">{this.props.t('DemandeLab')}</span> */}
-                  <span className="ms-1">Demande de labellisation</span>
-
-                </Link>
-              </li>
-            }
-             { Data?.role == 1 &&
+              >
+                <i className="ri-team-fill" style={{fontWeight : isActive('/members') ? "bold" :  "500"}}></i>
+                <span className="ms-1">{t('GestionDroit')}</span>
+              </Link>
+            </li>
+          }
+          {Data?.role === 1 &&
+            <li>
+              <Link to="/adfiles" className="waves-effect"
+                style={isActive('/adfiles') ? { color: 'white'} : { color : "#8590a5" }}
+              >
+                <i className="ri-upload-fill" style={{fontWeight : isActive('/adfiles') ? "bold" :  "500"}}></i>
+                <span className="ms-1">{t('upload files')}</span>
+              </Link>
+            </li>
+          }
+          {(Data?.role === 4 || Data?.role === 1) &&
+            <li>
+              <Link to="/DemandeLab" className="waves-effect"
+                  style={isActive('/DemandeLab') ? { color: 'white' } : { color : "#8590a5" ,}}
+              >
+                <i className="ri-file-edit-line" style={isActive('/DemandeLab') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+                <span className="ms-1">Demande de labellisation</span>
+              </Link>
+            </li>
+          }
+          {Data?.role === 1 &&
             <li>
               <Link to="/DemandeLabList" className="waves-effect">
-                <i className=" ri-file-list-line"></i>
-                {/* <span className="ms-1">{this.props.t('DemandeLablist')}</span> */}
+                <i className="ri-file-list-line" style={isActive('/DemandeLabList') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
                 <span className="ms-1">labellisation liste</span>
-
-
               </Link>
             </li>
-            }
+          }
+          {Data?.role === 4 &&
             <li>
-              <Link to="/formation" className="waves-effect">
-                <i className=" fas fa-pen"></i>
-                <span className="ms-1">Formation</span>
+              <Link to="/formation" className="waves-effect" 
+                      style={isActive('/formation') ? { color: 'white' } : { color : "#8590a5"  }}
+              >
+                <i className="ri-book-2-line" style={isActive('/formation') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+                <span className="ms-1">Demande de formation</span>
               </Link>
             </li>
+          }
+          {Data?.role === 4 &&
             <li>
               <Link to="/point-de-vente" className="waves-effect">
                 <i className="ri-store-3-fill"></i>
@@ -167,35 +152,48 @@ class SidebarContent extends Component {
               <Link to="/mes-fichier" className="waves-effect">
                 <i className=" ri-article-line"></i>
                 <span className="ms-1">Mes Fichier</span>
+              <Link to="/mes-fichier" className="waves-effect"
+                      style={isActive('/mes-fichier') ? { color: 'white' } : { color : "#8590a5"  }}
+
+              >
+                <i className="ri-article-line" style={isActive('/mes-fichier') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+                <span className="ms-1">Mes fichiers</span>
               </Link>
             </li>
+          }
+          {Data?.role === 3 &&
             <li>
               <Link to="/evenments" className="waves-effect">
-              <i className="mdi-content-paste"></i>
-                  <span className="ms-1">Ajouter Evenment</span>
+                <i className="mdi-content-paste" style={isActive('/evenments') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+                <span className="ms-1">Ajouter Evenment</span>
               </Link>
             </li>
+          }
+          {Data?.role === 3 &&
             <li>
               <Link to="/List-evenment" className="waves-effect">
-              <i className="ri-file-paper-2-line"></i>
-                  <span className="ms-1">List Evenment</span>
+                <i className="ri-file-paper-2-line" style={isActive('List-evenment') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+                <span className="ms-1">List Evenment</span>
               </Link>
             </li>
-            <li>
-              <Link to="/files" className="waves-effect">
-                <i className=" ri-folder-2-fill"></i>
-                <span className="ms-1">{this.props.t('Bibliothèque')}</span>
+          }
+          <li>
+            <Link to="/files" className="waves-effect"
+                  style={isActive('/files') ? { color: 'white' } : { color : "#8590a5"  }}
+>
+              <i className="ri-folder-2-line" style={ isActive('files') ? {fontWeight : "bold",color: 'white'} :  {fontWeight : "500", color : "#8590a5"}}></i>
+              <span className="ms-1">{t('Bibliothèque')}</span>
+            </Link>
+          </li>
+          <li>
+              <Link to="/#" className="waves-effect"
+                    style={isActive('/#') ? { color: 'white' } : { color : "#8590a5"  }}
+              >
+                <i className="ri-store-2-line"></i>
+                <span className="ms-1">{t('Ecommerce')}</span>
               </Link>
             </li>
-
-
-
-
-
-
-
-            
-            {/* theme Pages */}
+           {/* theme Pages
              <li>
               <Link to="/calendar" className=" waves-effect">
                 <i className="ri-calendar-2-line"></i>
@@ -382,23 +380,11 @@ class SidebarContent extends Component {
                   </ul>
                 </li>
               </ul>
-            </li>  
-
-          </ul>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
-
-const mapStatetoProps = state => {
-  return { ...state.Layout };
+            </li>   */}
+        </ul>
+      </div>
+    </React.Fragment>
+  );
 };
 
-export default withRouter(connect(mapStatetoProps, {
-  changeLayout,
-  changeSidebarTheme,
-  changeSidebarType,
-  changeLayoutWidth,
-  changePreloader
-})(withTranslation()(SidebarContent)));
+export default withRouter(withTranslation()(SidebarContent));
