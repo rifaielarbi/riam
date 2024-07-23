@@ -6,6 +6,14 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_blue.css";
 import Select from "react-select";
 import Breadcrumbs from '../../components/Common/Breadcrumb';
+import toastr from 'toastr'
+
+
+
+toastr.options = {
+    positionClass: "toast-bottom-right",
+    closeButton : true
+  }
 
 const Evenment = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -38,6 +46,10 @@ const Evenment = () => {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
     };
 
+    const handleSubmit = () =>{
+        toastr.success("L'evenement a été ajouté.")
+    }
+
     const handleMulti = (selectedOptions) => {
         console.log(selectedOptions)
         setSelectedMulti(selectedOptions);
@@ -54,12 +66,13 @@ const Evenment = () => {
             description: values.textarea,
             city: values.city,
         };
+
         console.log("Form Data:", formData);
 
-        // Clear form inputs
         setSelectedFiles([]);
         setSelectedMulti(null);
         event.target.reset();
+
     };
 
     return (
@@ -217,9 +230,8 @@ const Evenment = () => {
                                             </Col>
                                         </Row>
                                         <div className="d-flex justify-content-end">
-                                            <Button color="success">
+                                            <Button color="success" onClick={handleSubmit}>
                                                 sauvgarder
-
                                             </Button>
                                         </div>
                                     </AvForm>

@@ -22,7 +22,7 @@ const NonAuthLayout = (props) => {
         <Navigate to={{ pathname: "/dashboard", state: { from: props.location } }} />
       );
     } 
-    if(UserData.role == 4){
+    if(UserData.role == 4 || UserData.role == 3  ){
       return (
         <Navigate to={{ pathname: "/DemandeLab", state: { from: props.location } }} />
       );

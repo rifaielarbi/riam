@@ -113,6 +113,7 @@ import Evenment from "../pages/Evenment/Evenment";
 import Listevenment from "../pages/Evenment/Listevenment";
 import Formationad from "../pages/Formation/Formation-ad";
 import Poindevent from "../pages/Point de vente/Poindevent";
+import ListeAgriculteurs from "../pages/ListeAgri";
 
 
 const Data = JSON.parse(localStorage.getItem("authUser"))
@@ -228,6 +229,8 @@ const authProtectedRoutes = [
 	{ path: "/profile", component: <Profile /> },
 	{ path: "/DemandeLab", component: <DemandeLab /> },
 	{ path: "/DemandeLabList", component: <DemandeLabList /> },
+	{ path: "/ListeAgriculteurs", component: <ListeAgriculteurs /> },
+
 
 
 

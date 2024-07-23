@@ -10,94 +10,30 @@ const Listevenment = () => {
     const [events, setEvents] = useState([
         {
             id: 1,
-            titre: "Tech Conference 2024",
-            lieu: "Conference Hall A",
-            description: "A conference showcasing the latest in tech innovations.",
+            titre: "Evenement",
+            lieu: "Casablanca",
+            description: "test desc 01.",
             city: "San Francisco",
             date: "2024-07-10", 
-            image: defaultEventImage,
+            image: require('../../assets/images/event01.jpeg'),
         },
         {
             id: 2,
-            titre: "Art Expo",
-            lieu: "Art Gallery",
-            description: "An exhibition of modern art from around the world.",
-            city: "New York",
+            titre: "Evenement 01",
+            lieu: "Rabat",
+            description: "test desc.",
             date: "2024-08-15",
-            image: defaultEventImage,
+            image: require('../../assets/images/event02.jpg'),
         },
-        {
-            id: 3,
-            titre: "Music Festival",
-            lieu: "Central Park",
-            description: "A day-long festival featuring various music artists.",
-            city: "Chicago",
-            date: "2024-09-05",
-            image: defaultEventImage,
-        },
-        {
-            id: 4,
-            titre: "Startup Pitch Night",
-            lieu: "Tech Hub",
-            description: "An evening where startups pitch their ideas to investors.",
-            city: "Seattle",
-            date: "2024-06-20",
-            image: defaultEventImage,
-        },
-        {
-            id: 5,
-            titre: "Food Carnival",
-            lieu: "City Square",
-            description: "A carnival with food stalls, cooking demos, and more.",
-            city: "Los Angeles",
-            date: "2024-10-01",
-            image: defaultEventImage,
-        },
-        {
-            id: 6,
-            titre: "Book Fair",
-            lieu: "Exhibition Center",
-            description: "A fair with book signings, readings, and author meet-and-greets.",
-            city: "Boston",
-            date: "2024-11-12",
-            image: defaultEventImage,
-        },
-        {
-            id: 7,
-            titre: "Marathon",
-            lieu: "City Streets",
-            description: "Annual marathon with participants from all over the world.",
-            city: "Berlin",
-            date: "2024-09-25",
-            image: defaultEventImage,
-        },
-        {
-            id: 8,
-            titre: "Science Fair",
-            lieu: "University Hall",
-            description: "A fair showcasing scientific projects and experiments.",
-            city: "Cambridge",
-            date: "2024-07-22",
-            image: defaultEventImage,
-        },
-        {
-            id: 9,
-            titre: "Fashion Show",
-            lieu: "Fashion Avenue",
-            description: "A show featuring the latest fashion trends by top designers.",
-            city: "Paris",
-            date: "2024-08-30",
-            image: defaultEventImage,
-        },
-        {
-            id: 10,
-            titre: "Film Festival",
-            lieu: "Cinemax Theater",
-            description: "A festival featuring films from various genres and countries.",
-            city: "Toronto",
-            date: "2024-10-15",
-            image: defaultEventImage,
-        }
+        // {
+        //     id: 3,
+        //     titre: "Music Festival",
+        //     lieu: "Central Park",
+        //     description: "A day-long festival featuring various music artists.",
+        //     city: "Chicago",
+        //     date: "2024-09-05",
+        //     image: defaultEventImage,
+        // }
     ]);;
 
     const [modal, setModal] = useState(false);
@@ -118,7 +54,7 @@ const Listevenment = () => {
 
                 <Container fluid>
                 <Breadcrumbs
-                        title="List Evenments"
+                        title="Liste des événements"
                         breadcrumbItems={[]}
                     />
                     <Row>

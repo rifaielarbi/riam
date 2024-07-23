@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import Breadcrumbs from '../../components/Common/Breadcrumb';
 import { Container, Row, Col, Card, CardBody, Button, FormGroup, Label, Input, Table } from 'reactstrap';
+import toastr from 'toastr'
 import 'flatpickr/dist/themes/material_blue.css';
+
+
+toastr.options = {
+    positionClass: "toast-bottom-right",
+    closeButton : true
+  }
 
 export default function Poindevent() {
     const [formErrors, setFormErrors] = useState({});
@@ -12,19 +19,51 @@ export default function Poindevent() {
         heurs_ouvert_fermetur: '',
         heurs_fermeture: '',
         image: '',
-        produit: ''
+        produits: []
     });
     const [products, setProducts] = useState([]);
 
     const handleFormData = (event) => {
-        event.preventDefault();
+
+        const newProduct = {
+            image : formValues.image,
+            name : formValues.produit
+        }
+
+        setFormValues(prevState => ({
+            ...prevState,
+            produits: [...prevState.produits, newProduct]
+        }));
+        setProducts([...products, { image: formValues.image, produit: formValues.produit }]);
+        // event.preventDefault();
         // Vérification des erreurs avant de soumettre
-        const errors = validateForm();
-        if (Object.keys(errors).length === 0) {
+        // const errors = validateForm();
+        // if (Object.keys(errors).length === 0) {
             // Ajouter le produit au tableau des produits
-            setProducts([...products, { image: formValues.image, produit: formValues.produit }]);
+            // 
             // Réinitialiser les valeurs du formulaire
-            setFormValues({
+            // setFormValues({
+            //     nom: '',
+            //     numero_telefon: '',
+            //     localisation: '',
+            //     heurs_ouvert_fermetur: '',
+            //     heurs_fermeture: '',
+            //     image: '',
+            //     produit: ''
+            // });
+            // console.log(formValues)
+            // Réinitialiser les erreurs du formulaire
+            setFormErrors({});
+        // } else {
+        //     console.error('Il y a des erreurs dans le formulaire.');
+        //     setFormErrors(errors);
+        // }
+    };
+
+
+    const handleSubmit = () =>{
+        console.log(formValues)
+        setFormValues({
                 nom: '',
                 numero_telefon: '',
                 localisation: '',
@@ -33,13 +72,11 @@ export default function Poindevent() {
                 image: '',
                 produit: ''
             });
-            // Réinitialiser les erreurs du formulaire
             setFormErrors({});
-        } else {
-            console.error('Il y a des erreurs dans le formulaire.');
-            setFormErrors(errors);
-        }
-    };
+            setProducts([])
+            toastr.success("Le point de vente a été ajouté.")
+
+    }
 
     const validateForm = () => {
         let errors = {};
@@ -95,7 +132,6 @@ export default function Poindevent() {
                         <Col xs={12}>
                             <Card>
                                 <CardBody>
-                                    <form onSubmit={handleFormData}>
                                         <Row className="mb-3">
                                             <Col md={6}>
                                                 <FormGroup>
@@ -187,7 +223,7 @@ export default function Poindevent() {
                                             </Col>
                                         </Row>
 
-                                        <Breadcrumbs title="Ajouter Produits" breadcrumbItems={[]} style={{ margin: '20%' }} />
+                                        <Breadcrumbs title="AJOUTER les PRODUITS" breadcrumbItems={[]} style={{ margin: '20%' }} />
 
                                         <Row>
                                             <Col md={6}>
@@ -207,7 +243,7 @@ export default function Poindevent() {
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
-                                                    <Label for="produit-input">Produit</Label>
+                                                    <Label for="produit-input">Nom de produit</Label>
                                                     <Input
                                                         type="text"
                                                         name="produit"
@@ -225,14 +261,14 @@ export default function Poindevent() {
                                         </Row>
 
                                         <div className="d-flex justify-content-end">
-                                            <Button color="success" type="submit" onSubmit={() => console.log(handleFormData)}>
+                                            <Button color="success" type="submit" onClick={handleFormData}>
                                                 Ajouter
                                             </Button>
                                         </div>
 
                                     
 
-                                        <h4 style={{ fontSize: 20 }} className="card-title m-3">Liste des produits</h4>
+                                        <h4 style={{ fontSize: 20 }} className="card-title m-3">Liste produits ajouté</h4>
 
                                         <Row>
                                             <Col lg={12}>
@@ -266,11 +302,10 @@ export default function Poindevent() {
                                                 </Card>
                                             </Col>
                                         </Row>
-                                    </form>
                                 </CardBody>
                     <div className="d-flex justify-content-end m-3">
-                        <Button color="success" type="submit">
-                            Sauvgarde
+                        <Button color="success" type="submit" onClick={handleSubmit}>
+                            Enregistrer
                         </Button>
                     </div>
                             </Card>
