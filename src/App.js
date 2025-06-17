@@ -22,6 +22,8 @@ class App extends Component {
     }
   };
 
+
+
   render() {
     const Layout = this.getLayout();
 
