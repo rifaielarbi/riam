@@ -58,15 +58,15 @@ const Members = () => {
 
 
 
-  
+
 
   const handleClickMember = (member) =>{
     // if(member['profile']){
       console.log(member)
-     
+
       setactiveTabJustify("1")
       setopenModal(true)
-      
+
       setmemberSelected(member)
       setEmail(member?.email)
       setfullname(member?.NomComplet)
@@ -125,7 +125,7 @@ const Members = () => {
         disableFilters: true,
         filterable: false,
       },
-     
+
     ],
   );
 
@@ -187,7 +187,7 @@ const Members = () => {
               [item.id]: label,
             }));
           })
-        
+
         }).catch(err =>{
           console.log(err)
         })
@@ -217,7 +217,7 @@ const Members = () => {
     memberSelected.profile['days_dispo'] = JSON.stringify(DaysSelected)
 
     const DataProfile = { Data : memberSelected.profile }
-    
+
     await UpdateMemeberProfile(Data.token, DataProfile ).then(res =>{
       setopenModal(false)
       if(res['status'] == "success"){
@@ -246,7 +246,7 @@ const Members = () => {
     })
   }
 
-  
+
 
   return (
     <React.Fragment>
@@ -256,7 +256,7 @@ const Members = () => {
             title="Gestion des membres"
             breadcrumbItems={[]}
           />
-        
+
           <Card>
             <CardBody>
               <TableContainer
@@ -269,7 +269,7 @@ const Members = () => {
                 customPageSize={10}
                 // openModalUpdate={openModal}
                 // isAddOptions={true}
-                
+
                 handleClickRow={handleClickMember}
                 handleClickEvaluate={handleClickEvaluate}
                 dropdownData = {dropdownValues}
@@ -331,7 +331,7 @@ const Members = () => {
                                       <Input type="text" style={{backgroundColor : "#E1E1E1"}} className="form-control" id="basicpill-lastname-input2" value={Email} onChange={(e) =>setEmail(e.target.value)} disabled={true} />
                                   </div>
                               </Col>
-                          
+
                           <Row>
                               <Col lg="6">
                                   <div className="mb-3">
@@ -360,7 +360,7 @@ const Members = () => {
                                   />
                                   </div>
                               </Col>
-                              
+
                           </Row>
                           <Row>
                               <Col lg="12">
@@ -387,7 +387,7 @@ const Members = () => {
                             <Row>
                             <div className="mb-3" >
                             <Label className="form-label">
-                                Veuillez cocher les jours de la semaine où vous serez disponibles pour effectuer les visites des fermes : 
+                                Veuillez cocher les jours de la semaine où vous serez disponibles pour effectuer les visites des fermes :
                             </Label>
                                 <Select
                                     classNamePrefix="select2-selection"
@@ -397,10 +397,10 @@ const Members = () => {
                                     onChange={handlechangeDays}
                                     value={initialOptions}
                                 />
-                                
+
                             </div>
                             </Row>
-                           
+
                       </React.Fragment>
 											</TabPane>
                       <div style={{display : 'flex', alignItems : 'center' , justifyContent : 'center',margin : 10}}>
@@ -453,11 +453,11 @@ const Members = () => {
                       </div>
           </Modal>
 
-          
+
         </Container>
         {/* <Modal
             isOpen={modalUpdateIsOpen}
-            onRequestClose={closeModal} 
+            onRequestClose={closeModal}
             style={customStyles}
           ></Modal> */}
       </div>

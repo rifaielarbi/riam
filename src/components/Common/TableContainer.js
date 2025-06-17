@@ -155,6 +155,14 @@ const TableContainer = ({
     {
       id : 8,
       label : 'Distributeur'
+    },
+    {
+      id : 9,
+      label : 'C/A'
+    },
+    {
+      id : 10,
+      label : 'Membre du Conseil'
     }
 
   ]
@@ -204,20 +212,20 @@ const TableContainer = ({
   const handleExportData = async () => {
     const Data = JSON.parse(localStorage.getItem("authUser"));
     const filename = "Exportation-Data-Members-" + moment(new Date()).format('DD-MM-YYYY-hh-mm') + ".xlsx";
-  
+
     try {
       const response = await ExportDataMembers(Data.id, filename, Data.token);
-  
+
       const blobData = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       const url = window.URL.createObjectURL(blobData);
-  
+
       const link = document.createElement('a');
       link.href = url;
       link.setAttribute('download', filename);
       document.body.appendChild(link);
-  
+
       link.click();
-  
+
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
@@ -225,7 +233,7 @@ const TableContainer = ({
       // Handle the error as needed
     }
   };
- 
+
 
   const getRolelabel = (id) =>{
 
@@ -254,7 +262,7 @@ const TableContainer = ({
             className="form-select"
             value={pageSize}
             onChange={onChangeInSelect}
-          >   
+          >
             {[10, 20, 30, 40, 50].map(pageSize => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
@@ -352,14 +360,14 @@ const TableContainer = ({
 
                       console.log(row.original.evaluated)
 
-                    
 
-                      if(cell.column.Header == 'Évaluation') {  
+
+                      if(cell.column.Header == 'Évaluation') {
                         if(row.original.evaluated == 0){
                         return(
                           <td key={cell.id} {...cell.getCellProps()} onClick={()=>{handleClickEvaluate(row.original)}}>
                             <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
-                            <img  src={require('../../assets/icons/plan.png')} height={30} width={30}/> 
+                            <img  src={require('../../assets/icons/plan.png')} height={30} width={30}/>
 
                             </div>
                           </td>
@@ -369,8 +377,8 @@ const TableContainer = ({
                         return(
                             <td key={cell.id} {...cell.getCellProps()}>
                               <div style={{ display : 'flex',alignItems : 'center', justifyContent : 'center'}}>
-                              <img  src={require('../../assets/icons/check-mark.png')} height={30} width={30}/> 
-  
+                              <img  src={require('../../assets/icons/check-mark.png')} height={30} width={30}/>
+
                               </div>
                             </td>
                           )
@@ -392,39 +400,35 @@ const TableContainer = ({
                           {cell.render("Cell")}
                         </td>
                       );
-                      } else if(cell.row.original.Membership == 1){
-                        return(
-                        <UncontrolledDropdown>
-                            <DropdownToggle color="primary" type="button">
-                            {dropdownValues[cell.row.original.id] || dropdownData[cell.row.original.id] }{" "} <i className="mdi mdi-chevron-down"></i>
-                            </DropdownToggle>
-                            <DropdownMenu onChange={(value) => {alert(value)}} style={{ zIndex: 1000 }}>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,1)}}>Admin</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,2)}}>Membre</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,3)}}>Consommateurs</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Producteur</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,5)}}>Membre du COS</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,6)}}>Membre du BE</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,7)}}>Candidats</DropdownItem>
-                              <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Distributeur</DropdownItem>
-
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
-                        )
-                      } else {
-                        return (
-                        <td key={cell.id} {...cell.getCellProps()}>
-                           Non membre !
-                        </td>
-                        )
-                      }
+                      }  else {
+                      return (
+                      <UncontrolledDropdown>
+                      <DropdownToggle color="primary" type="button">
+                    {dropdownValues[cell.row.original.id] || dropdownData[cell.row.original.id] || "Non membre"}{" "}
+                    <i className="mdi mdi-chevron-down"></i>
+                  </DropdownToggle>
+                  <DropdownMenu style={{ zIndex: 1000 }}>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,1)}}>Admin</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,2)}}>Membre</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,3)}}>Consommateurs</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Producteur</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,5)}}>Membre du COS</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,6)}}>Membre du BE</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,7)}}>Candidats</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,4)}}>Distributeur</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,9)}}>C/A</DropdownItem>
+                    <DropdownItem href="#" onClick={(e) =>{handleDropdownChange(cell.row.original.id,10)}}>Membre du Conseil</DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              )
+            }
                     })}
                       {/* <td key={5} >
                           test
                         </td> */}
                   </tr>
                 </Fragment>
-                
+
               );
             })}
           </tbody>

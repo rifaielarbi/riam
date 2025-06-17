@@ -43,8 +43,8 @@ const Index = ({props}) => {
     { value: "3", label: "Consommateurs" },
     { value: "4", label: "Distributeurs/producteurs" },
     { value: "5", label: "COS" },
-    { value: "6", label: "BE" },
-    { value: "7", label: "Candidats avec CV" },
+    { value: "6", label: "C/A" },
+    { value: "7", label: "Membre du Conseil" },
   ];
 
   const handleAcceptedFiles = (files) => {
@@ -76,7 +76,7 @@ const Index = ({props}) => {
         "FileName" : Filename,
         "Filepath" : file.name,
         "Role" : AccesRole,
-        "FileSize": file.size 
+        "FileSize": file.size
       }
       Object.keys(additionalData).forEach((key) => {
         formData.append(key, additionalData[key]);
@@ -135,7 +135,7 @@ const Index = ({props}) => {
                             <div className="row">
                             <div className="col-md-6">
                                 <Label className="form-label" htmlFor="productname">
-                                    Nom de fichier 
+                                    Nom de fichier
                                 </Label>
                                 <Input
                                   id="productname"
@@ -233,11 +233,11 @@ const Index = ({props}) => {
                         </CardBody>
                         </Card>
                 </Col>
-                 
+
           </Row>
         </Container>
-        <LoadingModal show={showloading}/>  
- 
+        <LoadingModal show={showloading}/>
+
       </div>
     </React.Fragment>
   );

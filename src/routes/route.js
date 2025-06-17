@@ -29,7 +29,7 @@ import { Navigate } from "react-router-dom";
 
 
 const AppRoute = (props) => {
-	
+
 	useEffect(() =>{
 		const Data = localStorage.getItem("authUser")
 		},[])
@@ -40,18 +40,18 @@ const AppRoute = (props) => {
 		);
 	  }
 
-	  if (localStorage.getItem("nonMember") == "true") {
+	  if (localStorage.getItem("nonMember") === "true") {
 		return (
 		  <Navigate to={{ pathname: "/pricing", state: { from: props.location } }} />
 		);
-	  }	
+	  }
 
 	//   if (JSON.parse(localStorage.getItem("nonMember")) == true  ) {
 	// 	// alert('non member : ' + localStorage.getItem("nonMember"))
 	// 	return (
 	// 	  <Navigate to={{ pathname: "/comingsoon", state: { from: props.location } }} />
 	// 	);
-	//   } 
+	//   }
 
 	  return (<React.Fragment>
 		{props.children}

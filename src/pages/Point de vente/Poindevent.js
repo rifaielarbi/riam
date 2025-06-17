@@ -75,7 +75,6 @@ export default function Poindevent() {
             setFormErrors({});
             setProducts([])
             toastr.success("Le point de vente a été ajouté.")
-
     }
 
     const validateForm = () => {

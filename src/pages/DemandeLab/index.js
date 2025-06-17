@@ -61,7 +61,8 @@ const Profile = () => {
     const [décrivez , setdécrivez]  = useState("")
     const [connaissance , setconnaissance]  = useState("")
     const [nonsituationEau , setnonsituationEau]  = useState("")
-    
+    const [selectedOption, setSelectedOption] = useState("")
+
 
     // PJ
     const [uploadsFiles, setuploadsFiles] = useState([])
@@ -115,7 +116,7 @@ const Profile = () => {
         { Prodve: "Céréales", surf: "", nbrparc: "", situation: "" },
         { Prodve: "Arboriculture", surf: "", nbrparc: "", situation: "" }
       ]
-   
+
 
     // productions Tables 2
 
@@ -168,7 +169,7 @@ const Profile = () => {
             text: "Pourcentage de produits issus de la ferme (exemple : si 50% de sucre, 50% de fraises = 50%)",
             sort: false
             },
-            
+
         ]
         const products3 = [
             { id : 1,Prodve: "", type: "", Pourcentage: "" },
@@ -191,7 +192,7 @@ const Profile = () => {
             dataField: "nbr",
             text: "Nombre de chaque espèce",
             sort: false
-            } 
+            }
         ]
         const products4 = [
             { id : 1, Espèce: "", nbr: ""  },
@@ -228,7 +229,7 @@ const Profile = () => {
             dataField: "lutterravag",
             text: "En prévention et pour lutter contre les ravageurs",
             sort: false
-            } 
+            }
         ]
         const products5 = [
             { id: "Moyens utilisés (techniques, produits...)", fertil: "", luttermld: "" , lutternoncult: "", lutterravag: "" },
@@ -237,12 +238,98 @@ const Profile = () => {
 
     const optionCity = [
         {
+            label: "Région de Casablanca-Settat",
             options: [
                 { label: "Casablanca", value: "Casablanca" },
+                { label: "Mohammedia", value: "Mohammedia" },
+                { label: "El Jadida", value: "El Jadida" },
+                { label: "Settat", value: "Settat" }
+            ]
+        },
+        {
+            label: "Région de Rabat-Salé-Kénitra",
+            options: [
                 { label: "Rabat", value: "Rabat" },
+                { label: "Salé", value: "Salé" },
+                { label: "Kénitra", value: "Kénitra" },
+                { label: "Skhirat", value: "Skhirat" }
+            ]
+        },
+        {
+            label: "Région de Marrakech-Safi",
+            options: [
                 { label: "Marrakech", value: "Marrakech" },
-                { label: "Fes", value: "Fes" },
-                { label: "Tangier", value: "Tangier" },
+                { label: "Safi", value: "Safi" },
+                { label: "Essaouira", value: "Essaouira" }
+            ]
+        },
+        {
+            label: "Région de Fès-Meknès",
+            options: [
+                { label: "Fès", value: "Fès" },
+                { label: "Meknès", value: "Meknès" },
+                { label: "Ifrane", value: "Ifrane" },
+                { label: "Taza", value: "Taza" }
+            ]
+        },
+        {
+            label: "Région de Tanger-Tétouan-Al Hoceïma",
+            options: [
+                { label: "Tanger", value: "Tanger" },
+                { label: "Tétouan", value: "Tétouan" },
+                { label: "Al Hoceïma", value: "Al Hoceïma" }
+            ]
+        },
+        {
+            label: "Région de l'Oriental",
+            options: [
+                { label: "Oujda", value: "Oujda" },
+                { label: "Nador", value: "Nador" },
+                { label: "Berkane", value: "Berkane" }
+            ]
+        },
+        {
+            label: "Région de Souss-Massa",
+            options: [
+                { label: "Agadir", value: "Agadir" },
+                { label: "Taroudant", value: "Taroudant" },
+                { label: "Tiznit", value: "Tiznit" }
+            ]
+        },
+        {
+            label: "Région de Dakhla-Oued Ed-Dahab",
+            options: [
+                { label: "Dakhla", value: "Dakhla" }
+            ]
+        },
+        {
+            label: "Région de Laâyoune-Sakia El Hamra",
+            options: [
+                { label: "Laâyoune", value: "Laâyoune" },
+                { label: "Boujdour", value: "Boujdour" }
+            ]
+        },
+        {
+            label: "Région de Drâa-Tafilalet",
+            options: [
+                { label: "Errachidia", value: "Errachidia" },
+                { label: "Ouarzazate", value: "Ouarzazate" },
+                { label: "Zagora", value: "Zagora" }
+            ]
+        },
+        {
+            label: "Région de Béni Mellal-Khénifra",
+            options: [
+                { label: "Béni Mellal", value: "Béni Mellal" },
+                { label: "Khénifra", value: "Khénifra" },
+                { label: "Fquih Ben Salah", value: "Fquih Ben Salah" }
+            ]
+        },
+        {
+            label: "Région de Guelmim-Oued Noun",
+            options: [
+                { label: "Guelmim", value: "Guelmim" },
+                { label: "Tan-Tan", value: "Tan-Tan" }
             ]
         }
     ];
@@ -264,7 +351,7 @@ const Profile = () => {
         }
     };
 
-  
+
     const handlechangeProductions1 = (data) =>{
         setproduction1(data)
     }
@@ -281,11 +368,11 @@ const Profile = () => {
     const handlechangearbo = (data) =>{
         setarboric(data)
     }
-    
+
     const handlechangePratique = (data) =>{
         setpratiques(data)
     }
-   
+
 
 
 
@@ -315,7 +402,7 @@ const Profile = () => {
         const k = 1024;
         const dm = decimals < 0 ? 0 : decimals;
         const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    
+
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
       };
@@ -373,7 +460,7 @@ const Profile = () => {
         //         setprogressvalue(40)
         //     }
         // }
-    
+
     }
 
     const handleClickSave = async () =>{
@@ -382,13 +469,13 @@ const Profile = () => {
         } else {
             if(Data['completProfile'] != 100){
                 setprogressvalue(80)
-            } 
+            }
             setopenModal(true)
         }
     }
 
 
-  
+
 
     const handleChangeInspecter = (item,value) =>{
         settypeinspecter(prevState => {
@@ -472,10 +559,10 @@ const Profile = () => {
           Object.keys(additionalData).forEach((key) => {
             formData.append(key, additionalData[key]);
           });
-    
-        for (let file of uploadsFiles){ 
-          
-    
+
+        for (let file of uploadsFiles){
+
+
           const blobData = await fetch(URL.createObjectURL(file)).then((res) => res.blob());
           const blob = new Blob([blobData], { type: file.type });
           formData.append('files', blob, file.name);
@@ -495,7 +582,7 @@ const Profile = () => {
     }
 
     const saveProfile = async () =>{
-        
+
             if(calcNumberchecked(declareHonneur) == 0 ) {
                 toastr.error("Merci de cocher toutes les options qui correspondent à vos engagements.")
             } else {
@@ -528,11 +615,11 @@ const Profile = () => {
                         }).catch(err =>{
                             toastr.error("Erreur d'ajoute du profil !")
                         })
-                        
+
                     }
                 }).catch(err =>{
                     console.log(err)
-                }) 
+                })
             }
 
     }
@@ -570,7 +657,7 @@ const Profile = () => {
                     }).catch(err =>{
                         toastr.error("Erreur de mise à jour du profil !")
                     })
-                    
+
                 }
             })
         }
@@ -596,9 +683,9 @@ const Profile = () => {
 
                     <Row>
                         <Col lg="12">
-                            
+
                             <Card>
-                          
+
                                 <CardBody>
                                     {/* <h4 className="card-title mb-4">Basic pills Wizard</h4> */}
 
@@ -619,11 +706,11 @@ const Profile = () => {
                                                 </NavItem>
                                             ))}
                                         </ul>
-                                        
+
                                             {/* <Progress color="primary" value={progressvalue} >
                                                 {progressvalue}%
                                             </Progress> */}
-                                        
+
                                         <TabContent activeTab={activeTab} className="twitter-bs-wizard-tab-content">
                                             {[1, 2,3,4].map(tab => (
                                                 <TabPane key={tab} tabId={tab}>
@@ -631,10 +718,10 @@ const Profile = () => {
                                                         {tab === 1 && (
                                                             <React.Fragment>
                                                                   <Row style={{display : 'flex', alignItems : 'center', justifyContent : 'center'}}>
-                                
-                                
+
+
                                                                         <div style={{margin : 10, width :"50%", display : 'flex', flexDirection : 'row', justifyContent : 'space-between', alignItems : 'center', width  : "90%", marginTop :20 }}>
-                                                                                
+
                                                                                 <div className="form-check mb-3 ">
                                                                                     <Input className="form-check-input" type="checkbox" value="" id="type" onChange={(e) =>{settypedmnd("Production Végétable")}} />
                                                                                     <Label className="form-check-label" htmlFor="type">
@@ -653,7 +740,7 @@ const Profile = () => {
                                                                                         Apiculture
                                                                                     </Label>
                                                                                 </div>
-                                                                            
+
                                                                         </div>
                                                                     </Row>
                                                                 <Row>
@@ -749,7 +836,7 @@ const Profile = () => {
                                                                         />
                                                                         </div>
                                                                     </Col>
-                                                                    
+
                                                                 </Row>
                                                                 {/* <Row>
                                                                     <Col lg="12">
@@ -773,7 +860,7 @@ const Profile = () => {
                                                                         />
                                                                         </div>
                                                                     </Col>
-                                                                    
+
                                                                 </Row> */}
                                                                 <Row>
                                                                     <Col lg="12">
@@ -835,7 +922,7 @@ const Profile = () => {
                                                                     </div>
                                                                 </Col>
 
-                                                                
+
 
                                                                 </Row>
                                                                 <Row>
@@ -890,33 +977,59 @@ const Profile = () => {
 
                                                                 <Row>
                                                                     <Col lg="3">
-                                                                        <div className="mb-3">
-                                                                            <Label className="form-label" htmlFor="basicpillinput20">En propriété ?	</Label>
-                                                                            <Input type="text" className="form-control" id="basicpillinput20" value={propriété} onChange={(e) =>setpropriété(e.target.value)} />
+                                                                        <div className="mb-3 d-flex flex-column align-items-center">
+                                                                            <Input
+                                                                                type="radio"
+                                                                                name="habitat"
+                                                                                value="propriété"
+                                                                                checked={selectedOption === "propriété"}
+                                                                                onChange={() => setSelectedOption("propriété")}
+                                                                            />
+                                                                            <Label className="form-label mt-2">En propriété ?</Label>
                                                                         </div>
                                                                     </Col>
 
                                                                     <Col lg="3">
-                                                                        <div className="mb-3">
-                                                                            <Label className="form-label" htmlFor="basicpillinput21">En copropriété ?</Label>
-                                                                            <Input type="text" className="form-control" id="basicpillinput21" value={copropriété} onChange={(e) =>setscopropriété(e.target.value)} />
+                                                                        <div className="mb-3 d-flex flex-column align-items-center">
+                                                                            <Input
+                                                                                type="radio"
+                                                                                name="habitat"
+                                                                                value="copropriété"
+                                                                                checked={selectedOption === "copropriété"}
+                                                                                onChange={() => setSelectedOption("copropriété")}
+                                                                            />
+                                                                            <Label className="form-label mt-2">En copropriété ?</Label>
                                                                         </div>
                                                                     </Col>
 
                                                                     <Col lg="3">
-                                                                        <div className="mb-3">
-                                                                            <Label className="form-label" htmlFor="basicpillinput22">En location ?	</Label>
-                                                                            <Input type="text" className="form-control" id="basicpillinput22" value={location} onChange={(e) =>setslocation(e.target.value)} />
+                                                                        <div className="mb-3 d-flex flex-column align-items-center">
+                                                                            <Input
+                                                                                type="radio"
+                                                                                name="habitat"
+                                                                                value="location"
+                                                                                checked={selectedOption === "location"}
+                                                                                onChange={() => setSelectedOption("location")}
+                                                                            />
+                                                                            <Label className="form-label mt-2">En location ?</Label>
                                                                         </div>
                                                                     </Col>
 
                                                                     <Col lg="3">
-                                                                        <div className="mb-3">
-                                                                            <Label className="form-label" htmlFor="basicpillinput23">Sur combien de sites (lieux) différents ?</Label>
-                                                                            <Input type="text" className="form-control" id="basicpillinput23" value={sitesdiff} onChange={(e) =>setsitesdiff(e.target.value)} />
+                                                                        <div className="mb-3 d-flex flex-column align-items-center">
+                                                                            <Input
+                                                                                type="radio"
+                                                                                name="habitat"
+                                                                                value="sitesdiff"
+                                                                                checked={selectedOption === "sitesdiff"}
+                                                                                onChange={() => setSelectedOption("sitesdiff")}
+                                                                            />
+                                                                            <Label className="form-label mt-2">Sur combien de sites (lieux) différents ?</Label>
                                                                         </div>
                                                                     </Col>
                                                                 </Row>
+
+
                                                                 <Label className="form-label" htmlFor="basicpillinput1">Productions</Label>
                                                                     <EditableTables columns={columns1} rows={products1}  type={1} handlechange={handlechangeProductions1}/>
                                                                     <EditableTables columns={columns2} rows={products2} type={1} handlechange={handlechangeProductions2}/>
@@ -925,7 +1038,7 @@ const Profile = () => {
                                                                 <Label className="form-label" htmlFor="basicpillinput1">Arboricultire</Label>
 
                                                                     <EditableTables columns={columns4} rows={products4}  type={2} handlechange={handlechangearbo}/>
-                                                                
+
                                                                 <Label className="form-label" htmlFor="basicpillinput1">Pratiques : En quelques mots, décrivez-les</Label>
                                                                 <EditableTables columns={columns5} rows={products5}  type={2} handlechange={handlechangePratique}/>
 
@@ -937,7 +1050,7 @@ const Profile = () => {
                                                                             <Input type="text" className="form-control" id="basicpillinput24" value={typeacces}  onChange={(e) =>settypeacces(e.target.value)}/>
                                                                         </div>
                                                                   </Col>
-                                                              
+
                                                                 </Row>
 
                                                                 <Row>
@@ -954,7 +1067,7 @@ const Profile = () => {
 
                                                                 <Col lg="12">
                                                                         <div className="mb-3" style={{display : 'flex', flexDirection : 'row'}}>
-                                                                            <div style={{display : 'flex', width : "60%"}}> 
+                                                                            <div style={{display : 'flex', width : "60%"}}>
                                                                                 <Label className="form-label" htmlFor="basicpillinput1">Connaissez-vous la situation des ressources en eau dans votre zone ? </Label>
 
                                                                             </div>
@@ -966,7 +1079,7 @@ const Profile = () => {
                                                                                     Oui
                                                                                 </Label>
                                                                                 </div>
-                                                                                
+
                                                                                 <div style={{marginRight : 15}}>
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="non" style={{marginRight : 10}}  onChange={(e) =>{setsituationEau(e.target.checked)}}  />
                                                                                 <Label className="form-check-label" htmlFor="non">
@@ -976,11 +1089,11 @@ const Profile = () => {
 
                                                                             </div>
 
-                                                                        
+
                                                                         </div>
 
                                                                         <div  style={{display : 'flex', flexDirection : 'row', marginTop : 15}}>
-                                                                        <div style={{display : 'flex', width : "40%"}}> 
+                                                                        <div style={{display : 'flex', width : "40%"}}>
                                                                                 <Label className="form-label" htmlFor="basicpillinput26">Si oui, décrivez </Label>
 
                                                                             </div>
@@ -993,7 +1106,7 @@ const Profile = () => {
                                                                         </div>
 
                                                                         <div  style={{display : 'flex', flexDirection : 'row', marginTop : 15}}>
-                                                                        <div style={{display : 'flex', width : "40%"}}> 
+                                                                        <div style={{display : 'flex', width : "40%"}}>
                                                                                 <Label className="form-label" htmlFor="basicpillinput27">Si oui, comment avez-vous pris connaissance de cela ?</Label>
 
                                                                             </div>
@@ -1005,7 +1118,7 @@ const Profile = () => {
                                                                             </div>
                                                                         </div>
                                                                         <div  style={{display : 'flex', flexDirection : 'row', marginTop : 15}}>
-                                                                        <div style={{display : 'flex', width : "40%"}}> 
+                                                                        <div style={{display : 'flex', width : "40%"}}>
                                                                                 <Label className="form-label" htmlFor="basicpillinput28">Si non, comment pourriez-vous le faire ?</Label>
 
                                                                             </div>
@@ -1017,15 +1130,15 @@ const Profile = () => {
                                                                         </div>
                                                                   </Col>
                                                                 </Row>
-                                                              
+
                                                             </React.Fragment>
                                                         )}
                                                         {tab === 4 && (
                                                               <React.Fragment>
-                                                                
+
                                                                     <div style={{margin : 10,width :"100%",display :"flex", flexDirection : "row"}}>
                                                                         <div style={{margin : 10,width :"50%"}}>
-                                                                            
+
                                                                             <div className="form-check mb-3">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck1" onChange={(e) =>{handlechangedeclareHonneur(1,0,e.target.checked)}}/>
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
@@ -1063,9 +1176,9 @@ const Profile = () => {
                                                                                 </Label>
                                                                             </div>
                                                                     </div>
-                                                                    
+
                                                                     <div style={{margin : 10,width :"50%"}}>
-                                                                            
+
                                                                             <div className="form-check mb-3 ">
                                                                                 <Input className="form-check-input" type="checkbox" value="" id="defaultCheck6" onChange={(e) =>{handlechangedeclareHonneur(1,6,e.target.checked)}} />
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
@@ -1087,21 +1200,21 @@ const Profile = () => {
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
                                                                                 Avoir compris et accepter que le RIAM se réserve le droit de m’exclure du SPG Agroécologie Maroc et de me retirer l’utilisation du label si je ne respectes pas les engagements ou pour toute autre information trompeuse qui pourrait compromettre la réputation du label et l’organisation du RIAM </Label>
                                                                             </div>
-                                                                            
+
                                                                     </div>
                                                                     </div>
-                                                                 
-                                                                    
-                                                                    
+
+
+
                                                             </React.Fragment>
                                                          )}
                                                             {tab === 3 && (
                                                               <React.Fragment>
-                                                                
+
                                                                     <Row>
                                                                             <Col xs={12}>
-                                                                               
-                                                                                   
+
+
                                                                                     <Form>
                                                                                     <Dropzone
                                                                                         onDrop={acceptedFiles =>
@@ -1135,7 +1248,7 @@ const Profile = () => {
                                                                                             >
                                                                                             <div className="p-2">
                                                                                                 <Row className="align-items-center">
-                                                                                               
+
                                                                                                 <Col>
                                                                                                     <Link
                                                                                                     to="#"
@@ -1155,8 +1268,8 @@ const Profile = () => {
                                                                                     </div>
                                                                                     </Form>
 
-                                                                                    
-                                                                               
+
+
                                                                             </Col>
                                                                             </Row>
 
@@ -1168,11 +1281,11 @@ const Profile = () => {
                                                             toggle={() =>{setopenModal(false)}}
                                                             >
                                                             <ModalHeader >
-                                                             Déclare m’engager sur l’honneur à 
+                                                             Déclare m’engager sur l’honneur à
                                                             </ModalHeader>
                                                             <ModalBody>
                                                             <React.Fragment>
-                                                                
+
                                                                     <div style={{margin : 10,width :"100%",display :"flex", flexDirection : "row"}}>
                                                                         <div style={{margin : 10,width :"50%"}}>
                                                                             <Label className="form-label">
@@ -1215,7 +1328,7 @@ const Profile = () => {
                                                                                 </Label>
                                                                             </div>
                                                                     </div>
-                                                                    
+
                                                                     <div style={{margin : 10,width :"50%"}}>
                                                                             <Label className="form-label">
                                                                                  M’engage par ailleurs à :
@@ -1236,7 +1349,7 @@ const Profile = () => {
                                                                                 <Label className="form-check-label" htmlFor="defaultCheck1">
                                                                                 Respecter la vision commune du Système Participatif de Garantie Agroécologie Maroc du RIAM : le niveau de référence est défini par la charte et les cahiers des charges, et l’attribution du label se fait sur la base des critères des cahiers des charges. Cependant, ceux-ci reposent autant sur le respect des règles techniques que sur les moyens mis en œuvre pour y parvenir. La recherche continue de pistes d’amélioration des pratiques est privilégiée afin de tendre vers plus de cohérence.                                                                                </Label>
                                                                             </div>
-                                                                           
+
                                                                     </div>
                                                                     </div>
                                                                     <div style={{display : 'flex', alignItems : 'center' , justifyContent : 'center'}}>
@@ -1248,12 +1361,12 @@ const Profile = () => {
                                                                         Enregistrer
                                                                     </Button>
                                                                     </div>
-                                                                   
-                                                                    
+
+
                                                             </React.Fragment>
                                                             </ModalBody>
                                                             </Modal> */}
-                                                       
+
                                                         {/* {tab === 4 && (
                                                             <React.Fragment>
                                                                 <div className="row justify-content-center">
@@ -1279,11 +1392,11 @@ const Profile = () => {
                                             <li className={activeTab === 1 ? "previous disabled" : "previous"}>
                                                 <Link to="#" onClick={() => toggleTab(activeTab - 1)}>Précédent</Link>
                                             </li>
-                                            {activeTab === 4 ? 
+                                            {activeTab === 4 ?
                                                     <li className={"next"}>
                                                         <Link to="#" onClick={handleSubmit}>Enregistrer</Link>
                                                     </li>
-                                            : 
+                                            :
                                             <li className={(activeTab === 4) ? "next disabled" : "next"}>
                                                 <Link to="#" onClick={handleClickNext}>Suivant</Link>
                                             </li>
