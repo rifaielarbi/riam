@@ -74,8 +74,7 @@
     "redux-saga": "^1.2.3",
     "reselect": "^5.0.1",
     "simplebar-react": "^3.2.4",
-    "toastr": "^2.1.4",
-    "homepage": "/"
+    "toastr": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
